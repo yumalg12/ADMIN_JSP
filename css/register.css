@@ -35,10 +35,19 @@ border: 1px solid #ccc;
 }
 
 .done {
-border: 1px solid green;
+border: 1px solid rgb(0, 200, 0);
 }
 
 .false {
 border: 1px solid red;
 }
 
+span[id="btn" i]{
+	padding: 5px; 
+	border-radius: 5px;
+    border: 1px solid #0075ff;
+    background-color: #0075ff;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}

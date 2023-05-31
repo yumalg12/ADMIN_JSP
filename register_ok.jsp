@@ -1,6 +1,11 @@
-<!--regist_ok.jsp-->
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
+<%@page import="java.sql.DriverManager"%>
+<%@page import="java.sql.Connection"%>
+<%@page import="java.sql.PreparedStatement"%>
+<%@page import="java.sql.ResultSet"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,6 +16,7 @@
 <body>
 <h1>회원가입 완료</h1>
 
+<!-- 결과 표시 -->
     <label>ID</label>
     <%String userID=request.getParameter("userID");%>
     <input type="text" name="userID" placeholder="username" value="<%=userID%>" disabled> 
@@ -41,6 +47,7 @@
     <%String ssnLast=request.getParameter("ssnLast");%>
     <input type="password" name="ssnLast" placeholder="Last part" value="<%=ssnLast%>" disabled>
     
+    <%String SSN = ssnFirst + "-" + ssnLast; %>
     <br>
 
 <script>	
@@ -57,6 +64,39 @@
 		}
 	}	
 </script>
+
+
+	<%
+	// 유저 정보를 DB에 추가
+	Connection conn = null;
+
+	String url = "jdbc:mysql://localhost:3306/register";
+	String id = "root"; //MySQL에 접속을 위한 계정의 ID
+	String pwd = "mysql"; //MySQL에 접속을 위한 계정의 암호
+	Class.forName("com.mysql.jdbc.Driver");
+	conn = DriverManager.getConnection(url, id, pwd);
+	
+	PreparedStatement pstmt = null;
+
+	String sql = "insert into users(userID,PW,gender,birthMonth,SSN) "+
+			"values('"+userID+"','"+PW+"','"+Gender+"','"+convertedMonth+"','"+SSN+"');";
+	System.out.println(sql);
+	pstmt = conn.prepareStatement(sql);
+
+	// 실행 및 연결 종료
+	try{
+	pstmt.executeUpdate();
+	} catch(Exception e) {
+	%>
+	<br><br>
+	<span>잘못된 접근입니다.</span>
+	<script>
+	setTimeout(function() { window.location.href="./register.jsp";}, 1000);
+	</script>
+	<%
+	}
+	conn.close();
+	%>
 
 </body>
 </html>

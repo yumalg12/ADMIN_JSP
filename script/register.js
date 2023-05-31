@@ -1,3 +1,12 @@
+function phoneInput() {
+	if (document.getElementsByName("num_1")[0].value == "input") {
+		document.getElementsByName("num_1")[0].style.display = "none";
+		document.getElementsByName("num_1")[1].style.display = "";
+	} else {
+		document.getElementsByName("num_1")[0].style.display = "";
+		document.getElementsByName("num_1")[1].style.display = "none";
+	}
+}
 
 function falseCSS(id) {
 	var element = document.Registerform[id];
@@ -17,13 +26,47 @@ function checkID(uID) {
 	var regex = /^(?=.*[!@#$%^&*()-_=+\\|[\]{};:'",.<>/?])(?=.*[a-z0-9]).{5,8}$/;
 
 	if (regex.test(uID)) {
-		doneCSS("userID");
-		document.getElementById("IDnotice").style.display = "none";
+		doneCSS("userID").style.display = "none";
 	} else {
-		falseCSS("userID");
-		document.getElementById("IDnotice").style.display = "";
+		falseCSS("userID").style.display = "";
 	}
 }
+
+
+
+function fn_overlapped(){
+    var _id=$("#_member_id").val();
+    if(_id==''){
+   	 alert("ID를 입력하세요");
+   	 return;
+    }
+    $.ajax({
+       type:"post",
+       async:false,  
+       url:"overlapped.jsp",
+       dataType:"json",
+       data: {id:_id},
+       success:function (data,textStatus){
+    	   
+    //	   alert(data.result);
+    	   
+          if(data.result=='false'){
+       	    alert("사용할 수 있는 ID입니다.");
+       	    $('#btnOverlapped').prop("disabled", true);
+       	    $('#_member_id').prop("disabled", true);
+       	    $('#member_id').val(_id);
+          }else{
+        	  alert("사용할 수 없는 ID입니다.");
+          }
+       },
+       error:function(data,textStatus){
+          alert("에러가 발생했습니다.");ㅣ
+       },
+       complete:function(data,textStatus){
+          //alert("작업을완료 했습니다");
+       }
+    });  //end ajax	 
+ }	
 
 function checkPW() {
 	var PWone = document.Registerform.PW.value;
@@ -40,7 +83,7 @@ function checkPW() {
 
 function checkSSNfirst() {
 	var ssn = document.Registerform.ssnFirst.value;
-	var birthMon = document.Registerform.month.value;
+	var birthMon = document.getElementsByName("birthDate")[0].value.substr(5,2);
 	var regex = /^[0-9]{2}[0-1][1-9][0-3][0-9]$/;
 
 	if (regex.test(ssn) && (ssn.substring(2, 4) == birthMon) && (parseInt(ssn.substring(4, 7)) <= 31)) {
