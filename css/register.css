@@ -42,12 +42,11 @@ border: 1px solid rgb(0, 200, 0);
 border: 1px solid red;
 }
 
-span[id="btn" i]{
-	padding: 5px; 
-	border-radius: 5px;
-    border: 1px solid #0075ff;
-    background-color: #0075ff;
-    color: white;
-    font-weight: bold;
+.btn{
+    padding: 3px 6px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: #ccc;
     cursor: pointer;
+    font-size: 0.9rem;
 }

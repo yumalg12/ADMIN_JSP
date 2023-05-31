@@ -10,32 +10,40 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Member List from DB</title>
+<link rel="stylesheet" href="./css/table.css">
 </head>
 <body>
-<table border=1>
+
+<h1>가입자 정보</h1>
+
+<table>
 		<tr>
-	<td>User ID</td>
-	<td>Gender</td>
-	<td>Birth Month</td>	
-	<td>SSN</td>
+<th>아이디</th>
+<th>이름</th>
+<th>성별</th>
+<th>연락처</th>
+<th>SMS 수신</th>
+<th>이메일</th>
+<th>이메일 수신</th>
+<th>주소</th>
+<th>생년월일</th>
+<th>가입일</th>
 </tr>
 
 		<%
 		Connection conn = null;
 
-		String url = "jdbc:mysql://localhost:3306/campusdb";
+		String url = "jdbc:mysql://localhost:3306/register";
 		String id = "root"; //MySQL에 접속을 위한 계정의 ID
 		String pwd = "mysql"; //MySQL에 접속을 위한 계정의 암호
 		Class.forName("com.mysql.jdbc.Driver");
 		conn = DriverManager.getConnection(url, id, pwd);
 
-		out.println("<h1>MySQL DB 연동</h1>");
-
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 
-		String sql = "SELECT userID, gender, birthMonth, SSN FROM register.users;";
+		String sql = "SELECT MEMBER_ID, MEMBER_NAME, MEMBER_GENDER, TEL1, TEL2, TEL3, SMSSTS_YN, EMAIL1, EMAIL2, EMAILSTS_YN, ZIPCODE, ROADADDRESS, NAMUJIADDRESS, MEMBER_BIRTH_Y, MEMBER_BIRTH_M, MEMBER_BIRTH_D, JOINDATE FROM `t_shopping_member`;";
 		pstmt = conn.prepareStatement(sql);
 
 		// 4) 실행
@@ -43,18 +51,37 @@
 
 		// 5) 결과를 테이블에 출력
 		while (rs.next()) {
-			String userID = rs.getString("userID");
-			String gender = rs.getString("gender");
-			int birthMonth = rs.getInt("birthMonth");
-			String SSN = rs.getString("SSN");
+			String userID = rs.getString("MEMBER_ID");
+			String userName = rs.getString("MEMBER_NAME");
+			String gender = rs.getString("MEMBER_GENDER");
+			String tel1 = rs.getString("TEL1");
+			String tel2 = rs.getString("TEL2");
+			String tel3 = rs.getString("TEL3");
+			String SMSYN = rs.getString("SMSSTS_YN");
+			String email1 = rs.getString("EMAIL1");
+			String email2 = rs.getString("EMAIL2");
+			String emailYN = rs.getString("EMAILSTS_YN");
+			String zipcode = rs.getString("ZIPCODE");
+			String roadaddress = rs.getString("ROADADDRESS");
+			String namujiaddress = rs.getString("NAMUJIADDRESS");
+			Integer bYear = rs.getInt("MEMBER_BIRTH_Y");
+			Integer bMon = rs.getInt("MEMBER_BIRTH_M");
+			Integer bDay = rs.getInt("MEMBER_BIRTH_D");
+			String joinDate = rs.getString("JOINDATE").substring(0,10);
 		%>
 
 		<tr>
-	<td><%=userID%></td>
-	<td><%=gender%></td>
-	<td><%=birthMonth%></td>	
-	<td><%=SSN%></td>
-</tr>
+			<td><%=userID%></td>
+			<td><%=userName%></td>
+			<td><%=gender%></td>
+			<td><%=tel1+"-"+tel2+"-"+tel3%></td>
+			<td><%=SMSYN%></td>
+			<td><%=email1+"@"+email2%></td>
+			<td><%=emailYN%></td>
+			<td><%="(우)"+zipcode+" "+roadaddress+" "+namujiaddress%></td>
+			<td><%=bYear+"년 "+bMon+"월 "+bDay+"일"%></td>
+			<td><%=joinDate%></td>
+		</tr>
 <%
 	}
 %>
