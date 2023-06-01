@@ -12,24 +12,33 @@
 <meta charset="UTF-8">
 <title>Member List from DB</title>
 <link rel="stylesheet" href="./css/table.css">
+<link rel="stylesheet" href="./css/register.css">
 </head>
 <body>
-
+<div>
+<%
+String member_id = (String) session.getAttribute("member_id");
+%>
+<span>사용자: <%=member_id %> </span>
+<input type="submit" value="MyInfo" onClick="location.href='./userinfo.jsp';">
+<input type="submit" value="Logout" onClick="location.href='./logout.jsp';">
+</div>
 <h1>가입자 정보</h1>
 
 <table>
-		<tr>
-<th>아이디</th>
-<th>이름</th>
-<th>성별</th>
-<th>연락처</th>
-<th>SMS 수신</th>
-<th>이메일</th>
-<th>이메일 수신</th>
-<th>주소</th>
-<th>생년월일</th>
-<th>가입일</th>
-</tr>
+	<tr>
+		<th>Idx</th>
+		<th>아이디</th>
+		<th>이름</th>
+		<th>성별</th>
+		<th>연락처</th>
+		<th>SMS 수신</th>
+		<th>이메일</th>
+		<th>이메일 수신</th>
+		<th>주소</th>
+		<th>생년월일</th>
+		<th>가입일</th>
+	</tr>	
 
 		<%
 		Connection conn = null;
@@ -43,14 +52,16 @@
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 
-		String sql = "SELECT MEMBER_ID, MEMBER_NAME, MEMBER_GENDER, TEL1, TEL2, TEL3, SMSSTS_YN, EMAIL1, EMAIL2, EMAILSTS_YN, ZIPCODE, ROADADDRESS, NAMUJIADDRESS, MEMBER_BIRTH_Y, MEMBER_BIRTH_M, MEMBER_BIRTH_D, JOINDATE FROM `t_shopping_member`;";
+		String sql = "SELECT MEMBER_ID, MEMBER_NAME, MEMBER_GENDER, TEL1, TEL2, TEL3, SMSSTS_YN, EMAIL1, EMAIL2, EMAILSTS_YN, ZIPCODE, ROADADDRESS, NAMUJIADDRESS, MEMBER_BIRTH_Y, MEMBER_BIRTH_M, MEMBER_BIRTH_D, JOINDATE FROM `t_shopping_member` order by JOINDATE DESC;";
 		pstmt = conn.prepareStatement(sql);
 
 		// 4) 실행
 		rs = pstmt.executeQuery();
 
 		// 5) 결과를 테이블에 출력
+int i = 1;
 		while (rs.next()) {
+			Integer idx = i++;
 			String userID = rs.getString("MEMBER_ID");
 			String userName = rs.getString("MEMBER_NAME");
 			String gender = rs.getString("MEMBER_GENDER");
@@ -71,6 +82,7 @@
 		%>
 
 		<tr>
+			<td><%=idx%></td>
 			<td><%=userID%></td>
 			<td><%=userName%></td>
 			<td><%=gender%></td>
@@ -87,6 +99,13 @@
 %>
 
 </table>
-	
+
+<script>
+if ("<%=member_id %>" == "null") {
+	alert("잘못된 접근입니다.");
+	setTimeout(function() { window.location.href="./login.jsp";}, 100);
+}
+</script>
+
 </body>
 </html>

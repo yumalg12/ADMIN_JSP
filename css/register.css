@@ -50,3 +50,12 @@ border: 1px solid red;
     cursor: pointer;
     font-size: 0.9rem;
 }
+
+.notice{
+	 font-size: 0.8rem; 
+	 color: #aaa; 
+}
+
+.item{
+	margin-bottom: 5px;
+}

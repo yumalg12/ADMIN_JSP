@@ -65,99 +65,76 @@ function execDaumPostcode() {
     }
   }).open();
 }
-
-function fn_overlapped(){
-	   
-	var _id = $("#userID").val();
-    
-    if(_id==''){
-   	 alert("ID를 입력하십시오.");
-   	 return;
-    }
-  
-    $.ajax({
-       type:"get",
-       async:false,  
-       url:"overlapped.jsp",
-       dataType:"json",
-       data: {id:_id},
-       success:function (data,textStatus){
-    	       	   
-          if(data.result=='false'){
-       	    alert("사용 가능한 ID입니다.");
-       	    $('#checkIDdup').hide();
-       	    $('#userID').prop("disabled", true);
-       	    $('#userID').val(_id);
-          }else{
-        	  alert("사용할 수 없는 ID입니다.");
-          }
-       },
-       error:function(data,textStatus){
-          alert("문제가 발생했습니다.");
-       },
-       complete:function(data,textStatus){
-       }
-    });  //end ajax	 
- }	
 </script>
 
 </head>
 <body>
 <h1>회원가입</h1>
 <form name="Registerform" action=./register_ok.jsp method="post" onSubmit="return validateForm();">
+<div class="item">
     <label>아이디</label>
     <input type="text" class="normal" id="userID" name="userID" placeholder="user ID" oninput="checkID(this.value)" maxlength="8"> 
-    <span class="btn" id="checkIDdup" style="display: none;" onClick="fn_overlapped()">중복확인</span>
-    <span id="IDnotice" style="font-size: 0.8rem; font-color: #aaa; display: none;"> ※영문, 숫자, 특수문자로 이루어진 5~8자</span>
-    
-    <br>
+    <span class="notice" id="IDNotice" style="display: none;"> ※영문 소문자, 숫자로 이루어진 5~8자</span>
+</div>
+
+    <div class="item">
     <label>비밀번호</label>
-    <input type="password" class="normal" name="PW" placeholder="password" oninput="checkPW()">
-    <input type="password" class="normal" name="PWcheck" placeholder="password check" oninput="checkPW()">
+    <input type="password" class="normal" name="PW" placeholder="password" oninput="checkPWone(); checkPWtwo()" maxlength="20">
+    <input type="password" class="normal" name="PWcheck" style="display: none;" placeholder="password check" oninput="checkPWtwo()" maxlength="20">
+    <span class="notice" id="PWNotice" style="display: none;"> ※영문 소문자, 숫자, 특수문자로 이루어진 4~20자</span>
+    </div>
     
-    <br>
+    <div class="item">
     <label>이름</label>
     <input type="text" class="normal" name="userName" placeholder="user name" oninput="checkName()">
-    
-    <br>
-    <label>성별</label>
-    <span>여자</span><input type="radio" name="gender" value="female" onclick="checkSSNlast()">
-    <span> 남자</span><input type="radio" name="gender" value="male" onclick="checkSSNlast()">
-    
-    <br>
-    <label>생년월일</label>
-    <input type="date" class="normal" name="birthDate">
+    <span class="notice" id="nameNotice" style="display: none;"> ※한글 실명 2~5자</span>
+    </div>
 
-    <br>
+<div class="item">
+    <label>성별</label>
+    <span>여자</span><input type="radio" name="gender" value="female">
+    <span> 남자</span><input type="radio" name="gender" value="male">
+</div>    
+    
+    <div class="item">
+    <label>생년월일</label>
+    <input type="date" class="normal" name="birthDate" onChange="checkBirth();">
+    <span class="notice" id="ageNotice" style="display: none;"> ※만 14세 미만은 가입할 수 없습니다.</span>
+    </div>
+
+<div class="item">
     <label>전화번호</label> 
-    <select class="normal" name="num_1" onchange="phoneInput()">
+    <select class="normal" name="num1" onchange="phoneInput()">
 		<option value="010">010</option>
 		<option value="input">직접 입력</option>
 	</select> 
-	<input type="text" class="normal" style="display: none; width: 50px;" name="num_1" oninput="checkNum()"> 
+	<input type="text" class="normal" style="display: none; width: 50px;" name="num1" oninput="checkPhoneOne(this.name)" maxlength="3"> 
 	<span>-</span> 
-	<input type="text" class="normal" style="width: 50px;" name="num_2" oninput="checkNum()"> 
+	<input type="text" class="normal" style="width: 50px;" name="num2" oninput="checkPhone(this.name)" maxlength="4"> 
 	<span>-</span> 
-	<input type="text" class="normal" style="width: 50px;" name="num_3" oninput="checkNum()"> 
+	<input type="text" class="normal" style="width: 50px;" name="num3" oninput="checkPhone(this.name)" maxlength="4"> 
 	<br>
 	<label></label>
 	<input type="checkbox" id="SMSYN" name="SMSYN"><span>SMS 수신 동의</span>
+</div>
 	
-	<br>
+	<!-- 여기부터 유효성검사 추가 필요 -->
+	<div class="item">
     <label>이메일</label>
-	<input type="text" class="normal" name="email_1"> 
+	<input type="text" class="normal" name="email1"> 
 	<span>@</span> 
-	<select name="email_2" class="normal" style="width: 150px;" onchange="emailInput()">
+	<select name="email2" class="normal" style="width: 180px;" onchange="emailInput()">
 		<option value="naver.com">naver.com</option>
 		<option value="gmail.com">gmail.com</option>
 		<option value="input">직접 입력</option>
 	</select>
-	<input type="text" class="normal" style="display: none; width: 200px;" name="email_2" oninput="checkNum()"> 
+	<input type="text" class="normal" style="display: none; width: 180px;" name="email2" oninput="checkNum()"> 
 	<br>
 	<label></label>
     <input type="checkbox" id="emailYN" name="emailYN"><span>이메일 수신 동의</span>
-    
-    <br>
+	</div>
+
+<div class="item">
     <label>주소</label>
 
 	<span>우편번호: </span><input class="normal" type="text" id="zipcode" name="zipcode"> 
@@ -168,9 +145,11 @@ function fn_overlapped(){
 	<label></label><span>도로명 주소: </span><input class="normal" type="text" id="roadAddress" name="roadAddress" style="width: 300px;">
 	<br>
 	<label></label><span>나머지 주소: </span><input class="normal" type="text" name="namujiAddress" style="width: 300px;">
+</div>    
 
-    <br>
+<div class="item">
     <input type="submit" value="Register">
+</div>
 </form>
 
 <script src="./script/register.js"></script>

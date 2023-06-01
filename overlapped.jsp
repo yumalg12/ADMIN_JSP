@@ -17,7 +17,7 @@
 	conn = DriverManager.getConnection(url, id, pwd);
 
 	String userID = request.getParameter("userID");
-	
+
 	PreparedStatement pstmt = null;
 	ResultSet rs = null;
 	
@@ -32,13 +32,10 @@
 	
 	JSONObject resultObj = new JSONObject();
 	
-	if(rs.next())
-	{
+	if(rs.next()){
 		resultObj.put("result","true");
 		//out.print("true");
-	}
-	else
-	{
+	} else {
 		resultObj.put("result","false");
 		//out.print("false");
 	}
@@ -46,4 +43,3 @@
 	outt.print(resultObj.toString());
 	
 %>
-

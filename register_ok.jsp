@@ -35,8 +35,9 @@ request.setCharacterEncoding("UTF-8");
     
     <br>
     <label>성별</label>
-    <span>여자</span><input type="radio" name="gender" value="female" disabled>
-    <span> 남자</span><input type="radio" name="gender" value="male" disabled>
+    <%String Gender=request.getParameter("gender");%>
+    <span>여자</span><input type="radio" name="gender" value="female" <%if (Gender.equals("female")) out.print("checked");%> disabled>
+    <span> 남자</span><input type="radio" name="gender" value="male" <%if (Gender.equals("male")) out.print("checked");%> disabled>
     
     <br>
     <label>생년월일</label>
@@ -50,26 +51,26 @@ request.setCharacterEncoding("UTF-8");
     
     <br>
     <label>전화번호</label>
-    <%String num1=request.getParameter("num_1");
-    String num2=request.getParameter("num_2");
-    String num3=request.getParameter("num_3");
+    <%String num1=request.getParameter("num1");
+    String num2=request.getParameter("num2");
+    String num3=request.getParameter("num3");
     %>
-    <input type="text" class="normal" style="width: 50px;" name="num_1" value="<%=num1%>" disabled> 
+    <input type="text" class="normal" style="width: 50px;" name="num1" value="<%=num1%>" disabled> 
 	<span>-</span> 
-	<input type="text" class="normal" style="width: 50px;" name="num_2" value="<%=num2%>" disabled> 
+	<input type="text" class="normal" style="width: 50px;" name="num2" value="<%=num2%>" disabled> 
 	<span>-</span> 
-	<input type="text" class="normal" style="width: 50px;" name="num_3" value="<%=num3%>" disabled> 
+	<input type="text" class="normal" style="width: 50px;" name="num3" value="<%=num3%>" disabled> 
 	<br>
 	<label></label>
 	<input type="checkbox" id="SMSYN" disabled><span>SMS 수신 동의</span>
 
     <br>
     <label>이메일</label>
-    <%String email1=request.getParameter("email_1");%>
-    <input type="text" name="email_1" class="normal" value="<%=email1%>" disabled>
+    <%String email1=request.getParameter("email1");%>
+    <input type="text" name="email1" class="normal" value="<%=email1%>" disabled>
     <span>@</span>
-    <%String email2=request.getParameter("email_2");%>
-    <input type="text" name="email_2" class="normal" value="<%=email2%>" disabled>
+    <%String email2=request.getParameter("email2");%>
+    <input type="text" name="email2" class="normal" value="<%=email2%>" disabled>
 	<br>
 	<label></label>
     <input type="checkbox" id="emailYN" disabled><span>이메일 수신 동의</span>
@@ -89,20 +90,7 @@ request.setCharacterEncoding("UTF-8");
 	<label></label><span>나머지 주소: </span><input value="<%=namujiAddress%>" class="normal" type="text" name="namujiAddress" style="width: 300px;" disabled>
     
 
-<script>	
-	//gender
-	<%String Gender=request.getParameter("gender");%>
-
-	var genval = "<%=Gender%>";
-
-	var genderRadio = document.querySelectorAll('input[name="gender"]');
-	for (var i = 0; i < genderRadio.length; i++) {
-		if (genderRadio[i].value === genval) {
-			genderRadio[i].checked = true;
-			break;
-		}
-	}	
-	
+<script>		
 	//SMS 수신동의
 	<%String SMSYNval = request.getParameter("SMSYN");%>
 	if ("<%=SMSYNval%>" == "on"){
