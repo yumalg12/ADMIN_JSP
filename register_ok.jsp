@@ -13,20 +13,24 @@ request.setCharacterEncoding("UTF-8");
 <head>
 <meta charset="UTF-8">
 <title>Register Success</title>
-<link rel="stylesheet" href="./css/register.css">
+<link rel="stylesheet" href="./css/main.css">
 </head>
+<%@include file="./header.jsp" %>
+
 <body>
+<div class="contents">
+
 <h1>회원가입 완료</h1>
 
 <!-- 결과 표시 -->
     <label>아이디</label>
-    <%String userID=request.getParameter("userID");%>
+    <%String userID=request.getParameter("userIDval");%>
     <input type="text" name="userID" class="normal" placeholder="userID" value="<%=userID%>" disabled> 
     
     <br>
     <label>비밀번호</label>
     <%String PW=request.getParameter("PW");%>
-    <input type="password" name="PW" class="normal" placeholder="password" value="<%=PW%>" disabled>
+    <input type="password" name="PW" class="normal" placeholder="password" value="1q2w3e4r5t6y7u8i9o0p" disabled>
     
     <br>
     <label>이름</label>
@@ -78,40 +82,33 @@ request.setCharacterEncoding("UTF-8");
     <br>
     <label>주소</label>
     <%String zipcode=request.getParameter("zipcode");%>
-	<span>우편번호: </span><input value="<%=zipcode%>" class="normal" type="text" id="zipcode" name="zipcode" disabled> 
+	<span>우편번호: </span><input value="<%=zipcode %>" class="normal" type="text" id="zipcode" name="zipcode" disabled> 
 	<br>
 	<%String jibunAddress=request.getParameter("jibunAddress");%>
-	<label></label><span>도로명 주소: </span><input value="<%=jibunAddress%>" class="normal" type="text" id="jibunAddress" name="jibunAddress" style="width: 300px;" disabled>
+	<label></label><span>도로명 주소: </span><input value="<%=jibunAddress %>" class="normal" type="text" id="jibunAddress" name="jibunAddress" style="width: 300px;" disabled>
 	<br>
 	<%String roadAddress=request.getParameter("roadAddress");%>
-	<label></label><span>지번 주소: </span><input value="<%=roadAddress%>" class="normal" type="text" id="roadAddress" name="roadAddress" style="width: 300px;" disabled>
+	<label></label><span>지번 주소: </span><input value="<%=roadAddress %>" class="normal" type="text" id="roadAddress" name="roadAddress" style="width: 300px;" disabled>
 	<br>
 	<%String namujiAddress=request.getParameter("namujiAddress");%>
-	<label></label><span>나머지 주소: </span><input value="<%=namujiAddress%>" class="normal" type="text" name="namujiAddress" style="width: 300px;" disabled>
-    
-
-<script>		
-	//SMS 수신동의
-	<%String SMSYNval = request.getParameter("SMSYN");%>
-	if ("<%=SMSYNval%>" == "on"){
-		document.getElementById("SMSYN").checked = 'true';
-		<%SMSYNval = "true";%>
-	} else {
-		<%SMSYNval = "false";%>
-	}
-	
-	//이메일 수신동의
-	<%String emailYNval = request.getParameter("emailYN");%>
-	if ("<%=emailYNval%>" == "on"){
-		document.getElementById("emailYN").checked = 'true';
-		<%emailYNval = "true";%>
-	} else {
-		<%emailYNval = "false";%>
-	}
-</script>
+	<label></label><span>나머지 주소: </span><input value="<%=namujiAddress %>" class="normal" type="text" name="namujiAddress" style="width: 300px;" disabled>
 
 
 	<%
+	String SMSYNval = request.getParameter("SMSYN");
+	String SMSYN = "N"; // 기본값으로 초기화
+
+	if (SMSYNval != null && SMSYNval.equals("on")) {
+	    SMSYN = "Y";
+	}
+
+	String emailYNval = request.getParameter("emailYN");
+	String emailYN = "N"; // 기본값으로 초기화
+
+	if (emailYNval != null && emailYNval.equals("on")) {
+	    emailYN = "Y";
+	}
+
 	// 유저 정보를 DB에 추가
 	Connection conn = null;
 
@@ -131,8 +128,8 @@ request.setCharacterEncoding("UTF-8");
 			+"MEMBER_BIRTH_Y, MEMBER_BIRTH_M, MEMBER_BIRTH_D) "+
 			"values('"
 			+userID+"','"+PW+"','"+name+"','"+Gender+"','"
-			+num1+"','"+num2+"','"+num3+"','"+SMSYNval+"','"
-			+email1+"','"+email2+"','"+emailYNval+"','"
+			+num1+"','"+num2+"','"+num3+"','"+SMSYN+"','"
+			+email1+"','"+email2+"','"+emailYN+"','"
 			+zipcode+"','"+roadAddress+"','"+jibunAddress+"','"+namujiAddress+"','"
 			+bYear+"','"+bMon+"','"+bDay
 			+"');";
@@ -142,10 +139,15 @@ request.setCharacterEncoding("UTF-8");
 	// 실행 및 연결 종료
 	try{
 	pstmt.executeUpdate();
+	%>
+	<script>
+	setTimeout(function() { window.location.href="./login.jsp";}, 1000);
+	</script>
+	<%
 	} catch(Exception e) {
 	%>
 	<br><br>
-	<span>잘못된 접근입니다.</span>
+	<span style="color: red;">잘못된 접근입니다.</span>
 	<script>
 	setTimeout(function() { window.location.href="./register.jsp";}, 1000);
 	</script>
@@ -154,5 +156,17 @@ request.setCharacterEncoding("UTF-8");
 	conn.close();
 	%>
 
+	<script>		
+	//SMS 수신동의
+	if ("<%=SMSYNval %>" == "on"){
+		document.getElementById("SMSYN").checked = 'true';
+	}
+
+	//이메일 수신동의
+	if ("<%=emailYNval%>" == "on"){
+		document.getElementById("emailYN").checked = 'true';
+		}
+</script>
+</div>
 </body>
 </html>

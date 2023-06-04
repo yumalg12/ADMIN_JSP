@@ -12,10 +12,14 @@ request.setCharacterEncoding("UTF-8");
 <head>
 <meta charset="UTF-8">
 <title>Member Login</title>
-<link rel="stylesheet" href="./css/register.css">
+<link rel="stylesheet" href="./css/main.css">
 
 </head>
+<%@include file="./header.jsp" %>
+
 <body>
+<div class="contents">
+
 <h1>로그인</h1>
 <form name="Loginform" action="./login_ok.jsp" method="post" style="display: inline;">
     <label>아이디</label>
@@ -32,6 +36,6 @@ request.setCharacterEncoding("UTF-8");
     
     
 <script src="http://code.jquery.com/jquery-latest.js"></script> 
-
+</div>
 </body>
 </html>

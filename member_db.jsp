@@ -11,20 +11,23 @@
 <head>
 <meta charset="UTF-8">
 <title>Member List from DB</title>
-<link rel="stylesheet" href="./css/table.css">
-<link rel="stylesheet" href="./css/register.css">
+<link rel="stylesheet" href="./css/main.css">
 </head>
-<body>
-<div>
-<%
-String member_id = (String) session.getAttribute("member_id");
-%>
-<span>사용자: <%=member_id %> </span>
-<input type="submit" value="MyInfo" onClick="location.href='./userinfo.jsp';">
-<input type="submit" value="Logout" onClick="location.href='./logout.jsp';">
-</div>
-<h1>가입자 정보</h1>
+<%@include file="./header.jsp" %>
 
+<body>
+<div class="contents">
+<h1>가입자 정보</h1>
+<div>
+    <form name="SearchQueryForm" method="post" style="display: inline;">
+    <label>SQL Query: </label>
+    <input type="text" class="normal" name="query" placeholder="where ..."  value ="" style="width: 300px;">
+        <input type="submit" value="Submit">
+        </form>
+          <input role="switch" type="checkbox" />
+        
+</div>
+<br>
 <table>
 	<tr>
 		<th>Idx</th>
@@ -99,6 +102,7 @@ int i = 1;
 %>
 
 </table>
+</div>
 
 <script>
 if ("<%=member_id %>" == "null") {

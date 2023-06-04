@@ -13,16 +13,33 @@ function doneCSS(name) {
 	element.classList.add("done");
 }
 
+
+function falseCSSName(name, num) {
+	var element = document.getElementsByName(name)[num];
+	element.classList.remove("normal");
+	element.classList.remove("done");
+	element.classList.add("false");
+}
+
+function doneCSSName(name, num) {
+	var element = document.getElementsByName(name)[num];
+	element.classList.remove("normal");
+	element.classList.remove("false");
+	element.classList.add("done");
+}
+
 function checkID(uID) {
 	var regex = /^[a-z0-9]{5,8}$/;
 
 	if (regex.test(uID)) {
 		doneCSS("userID");
 		document.getElementById("IDNotice").style.display = "none";
+		document.getElementById("checkIDdup").style.display = "";
 		return true;
 	} else {
 		falseCSS("userID");
 		document.getElementById("IDNotice").style.display = "";
+		document.getElementById("checkIDdup").style.display = "none";
 		return false;
 	}
 }	
@@ -78,17 +95,25 @@ function checkBirth(){
   currentDate.setHours(0, 0, 0, 0);
   var birthDateInput = document.getElementsByName("birthDate")[0].value;
   var [year, month, day] = birthDateInput.split('-').map(Number);
-  var birthDate = new Date(year, month - 1, day + 3);
+  var birthDate = new Date(year, month - 1, day);
 
   var age = (currentDate - birthDate) / (1000 * 60 * 60 * 24 * 365);
+  console.log(age);
   
-	if (age < 14) {
+	if (age < 14 && 0 <= age) {
 		falseCSS("birthDate");
 		document.getElementById("ageNotice").style.display = "";
+		document.getElementById("ageNotice2").style.display = "none";
+		return false;
+	} else if (age < 0) {
+		falseCSS("birthDate");
+		document.getElementById("ageNotice").style.display = "none";
+		document.getElementById("ageNotice2").style.display = "";
 		return false;
 	} else {
 		doneCSS("birthDate");
 		document.getElementById("ageNotice").style.display = "none";
+		document.getElementById("ageNotice2").style.display = "none";
 		return true;
 	}
 }
@@ -97,9 +122,11 @@ function checkBirth(){
 function phoneInput() {
 	if (document.getElementsByName("num1")[0].value == "input") {
 		document.getElementsByName("num1")[0].style.display = "none";
+		document.getElementsByName("num1")[0].disabled = true;
 		document.getElementsByName("num1")[1].style.display = "";
 	} else {
 		document.getElementsByName("num1")[0].style.display = "";
+		document.getElementsByName("num1")[0].disabled = false;
 		document.getElementsByName("num1")[1].style.display = "none";
 	}
 }
@@ -108,22 +135,20 @@ function checkPhoneOne(){
 	var regex = /^[0][1-9][0-9]$/;
 
 	if (regex.test(document.getElementsByName("num1")[0].value) || regex.test(document.getElementsByName("num1")[1].value)) {
-		var element = document.Registerform["num1"][1];
-		element.classList.remove("normal");
-		element.classList.remove("false");
-		element.classList.add("done");
+		doneCSSName("num1", 1);
 		return true;
 	} else {
-		var element = document.Registerform["num1"][1];
-		element.classList.remove("normal");
-		element.classList.remove("done");
-		element.classList.add("false");
+		falseCSSName("num1", 1);
 		return false;
 	}
 }
 
 function checkPhone(name){
-	var regex = /^[0-9]{3,4}$/;
+	if (name === "num2"){
+	var regex = /^[0-9]{3,4}$/;		
+	} else if (name === "num3") {
+			var regex = /^[0-9]{4}$/;		
+	}
 
 	if(regex.test(document.getElementsByName(name)[0].value)) {
 		doneCSS(name);
@@ -138,17 +163,19 @@ function checkPhone(name){
 function emailInput() {
 	if (document.getElementsByName("email2")[0].value == "input") {
 		document.getElementsByName("email2")[0].style.display = "none";
+		document.getElementsByName("email2")[0].disabled = true;
 		document.getElementsByName("email2")[1].style.display = "";
 	} else {
 		document.getElementsByName("email2")[0].style.display = "";
+		document.getElementsByName("email2")[0].disabled = false;
 		document.getElementsByName("email2")[1].style.display = "none";
 	}
 }
 
-function checkMail() {
-	var len = (document.getElementsByName("email1")[0].value).length;
+function checkMail1() {
+	var regex = /^[a-zA-Z0-9!@#$%^&*()-_=+\\|[\]{};:'",.<>/?]+$/;
 	
-	if(len >= 1){
+	if(regex.test(document.Registerform["email1"].value)){
 		doneCSS("email1");
 		return true;
 	} else {
@@ -157,38 +184,85 @@ function checkMail() {
 	}
 }
 
+function checkMail2() {
+	var regex = /^[a-zA-Z0-9]+[\.][a-z]+$/;
+	
+	if(regex.test(document.getElementsByName("email2")[1].value)){
+		doneCSSName("email2", 1);
+		return true;
+	} else {
+		falseCSSName("email2", 1);
+		return false;
+	}
+}
+
+function checkZipCode() {
+	var regex = /^[0-9]{5}$/;
+
+	if(regex.test(document.Registerform.zipcode.value)){
+		doneCSS("zipcode");
+		return true;
+	} else {
+		falseCSS("zipcode");
+		return false;
+	}
+	
+}
+
+function checkAddress(name) {
+	var len = document.Registerform[name].value.length;
+
+	if(len > 0){
+		doneCSS(name);
+		return true;
+	} else {
+		falseCSS(name);
+		return false;
+	}
+	
+}
 
 function validateForm() {
-	//id check
-	var uID = document.Registerform.userID.value;
 
-	if (checkID(uID)) {
-		
-		//pw check
-		if (checkPW()) {
+	if (checkID(document.Registerform.userID.value)) {
 
-			// name check
-			if (checkName()) {
+		if (document.Registerform.userID.disabled) {
+			
+			//pw check
+			if (checkPWone() && checkPWtwo()) {
 
-				//gender check
-				if (document.Registerform.gender.value != '') {
+				// name check
+				if (checkName()) {
 
-					//birth check
-					if (checkBirth()) {
+					//gender check
+					if (document.Registerform.gender.value != '') {
 
-						//Phone number check
-						if (checkPhoneOne() && checkPhone(num2) && checkPhone(num3)){
-							
-							//email check
-							if(checkMail()){
-								
-								// address check
-								if (checkAddress()){
-									
-									return true;
-									
+						//birth check
+						if (checkBirth()) {
+
+							//Phone number check
+							if (checkPhoneOne() && checkPhone(num2) && checkPhone(num3)) {
+
+								//email check
+								if (checkMail1() && checkMail2()) {
+
+									// address check
+									if (checkZipCode() && (checkAddress("roadAddress") || checkAddress("jibunAddress")) ) {
+
+										return true;
+
+									} else {
+										alert("올바른 주소를 입력하십시오.");
+										setTimeout(function() {
+											var elements = document.getElementsByClassName("false");
+											if (elements.length > 0) {
+												elements[0].focus();
+											}
+										}, 100);
+									}
+
 								} else {
-									alert("올바른 주소를 입력하십시오.");
+									alert("올바른 이메일 주소를 입력하십시오.");
 									setTimeout(function() {
 										var elements = document.getElementsByClassName("false");
 										if (elements.length > 0) {
@@ -196,9 +270,9 @@ function validateForm() {
 										}
 									}, 100);
 								}
-								
+
 							} else {
-								alert("올바른 이메일 주소를 입력하십시오.");
+								alert("올바른 전화번호를 입력하십시오.");
 								setTimeout(function() {
 									var elements = document.getElementsByClassName("false");
 									if (elements.length > 0) {
@@ -206,37 +280,33 @@ function validateForm() {
 									}
 								}, 100);
 							}
-							
+
 						} else {
-							alert("올바른 전화번호를 입력하십시오.");
-							setTimeout(function() {
-								var elements = document.getElementsByClassName("false");
-								if (elements.length > 0) {
-									elements[0].focus();
-								}
-							}, 100);
+							alert("올바른 생년월일을 입력하십시오.");
+							setTimeout(function() { (document.Registerform.birthDate).focus(); }, 100);
+							return false;
 						}
 
 					} else {
-						alert("올바른 생년월일을 입력하십시오.");
-						setTimeout(function() { (document.Registerform.birthDate).focus(); }, 100);
+						alert("올바른 이름을 입력하십시오.");
+						setTimeout(function() { (document.Registerform.userName).focus(); }, 100);
 						return false;
 					}
 
 				} else {
-					alert("올바른 이름을 입력하십시오.");
-					setTimeout(function() { (document.Registerform.userName).focus(); }, 100);
+					alert("성별을 선택하십시오.");
 					return false;
 				}
 
 			} else {
-				alert("성별을 선택하십시오.");
+				alert("비밀번호를 확인하십시오.");
+				setTimeout(function() { (document.Registerform.PWcheck).focus(); }, 100);
 				return false;
 			}
 
 		} else {
-			alert("패스워드 확인 란을 다시 입력하십시오.");
-			setTimeout(function() { (document.Registerform.PWcheck).focus(); }, 100);
+			alert("ID 중복 확인이 필요합니다.");
+			setTimeout(function() { (document.Registerform.userID).focus(); }, 100);
 			return false;
 		}
 
@@ -247,3 +317,4 @@ function validateForm() {
 	}
 
 }
+

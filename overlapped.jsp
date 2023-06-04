@@ -23,7 +23,6 @@
 	
 	String sql = "SELECT * FROM T_SHOPPING_MEMBER WHERE MEMBER_ID = '"+userID+"';";
 	pstmt = conn.prepareStatement(sql);
-	//out.print(sql);
 
 	rs = pstmt.executeQuery();
 	

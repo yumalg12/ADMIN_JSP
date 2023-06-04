@@ -59,7 +59,7 @@ if ("<%=userID%>" == "null"){
 	String member_id = userID;
 	session.setAttribute("member_id", member_id);
 	%>
-	setTimeout(function() { window.location.href="./member_db.jsp";}, 100);
+	setTimeout(function() { window.location.href="./main.jsp";}, 100);
 } else {
 	alert("오류가 발생했습니다.");
 }
