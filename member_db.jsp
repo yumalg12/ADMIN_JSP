@@ -16,8 +16,14 @@
 <%@include file="./header.jsp" %>
 
 <body>
-<div class="contents">
-<h1>가입자 정보</h1>
+	<div class="contents">
+		<div class="grid"
+			style="display: grid; grid-template-columns: 200px 1fr;">
+
+			<div class="container sidebar">
+				<%@include file="./sidebar.jsp"%>
+			</div>
+			<div class="container"><h1>전체회원조회</h1>
 <div>
     <form name="SearchQueryForm" method="post" style="display: inline;">
     <label>SQL Query: </label>
@@ -103,7 +109,8 @@ int i = 1;
 
 </table>
 </div>
-
+</div>
+</div>
 <script>
 if ("<%=member_id %>" == "null") {
 	alert("잘못된 접근입니다.");

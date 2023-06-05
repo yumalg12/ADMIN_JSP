@@ -66,7 +66,7 @@ function fn_overlapped() {
     $.ajax({
         type: "post",
         async: false,
-        url: "overlapped.jsp",
+        url: "./account/overlapped.jsp",
         dataType: "json",
         data: {userID: _id},
         success: function(data, textStatus) {
@@ -96,7 +96,7 @@ function fn_overlapped() {
 <body>
 <div class="contents">
 <h1>회원가입</h1>
-<form name="Registerform" action=./register_ok.jsp method="post" onSubmit="return validateForm();">
+<form name="Registerform" action=./account/register_ok.jsp method="post" onSubmit="return validateForm();">
 <div class="item">
     <label>아이디</label>
     <input type="text" class="normal" id="userID" name="userID" placeholder="user ID" oninput="checkID(this.value)" maxlength="8"> 

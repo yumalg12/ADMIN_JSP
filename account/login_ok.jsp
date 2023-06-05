@@ -49,7 +49,7 @@ while (rs.next()) {
 <script>
 if ("<%=userID%>" == "null"){
 	alert("가입된 ID가 없습니다.");
-	setTimeout(function() { window.location.href="./login.jsp";}, 100);
+	setTimeout(function() { window.location.href="../login.jsp";}, 100);
 } else if ("<%=userPW%>" != "<%=inputPW%>") {
 	alert("PW가 틀렸습니다.");
 	history.back();
@@ -59,7 +59,7 @@ if ("<%=userID%>" == "null"){
 	String member_id = userID;
 	session.setAttribute("member_id", member_id);
 	%>
-	setTimeout(function() { window.location.href="./main.jsp";}, 100);
+	setTimeout(function() { window.location.href="../main.jsp";}, 100);
 } else {
 	alert("오류가 발생했습니다.");
 }

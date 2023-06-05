@@ -145,9 +145,11 @@ function checkPhoneOne(){
 
 function checkPhone(name){
 	if (name === "num2"){
-	var regex = /^[0-9]{3,4}$/;		
+		var regex = /^[0-9]{3,4}$/;		
 	} else if (name === "num3") {
-			var regex = /^[0-9]{4}$/;		
+		var regex = /^[0-9]{4}$/;		
+	}  else if (name === "num1") {
+		var regex = /^[0][1-9][0-9]$/;
 	}
 
 	if(regex.test(document.getElementsByName(name)[0].value)) {

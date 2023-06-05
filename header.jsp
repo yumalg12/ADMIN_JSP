@@ -50,8 +50,7 @@ String member_id = (String) session.getAttribute("member_id");
     font-weight: bold;
     margin-right: 8px;
 ">User: <%=member_id %> </span>
-<input type="submit" class="headerbtn" value="MyInfo" onClick="location.href='./userinfo.jsp';">
-<input type="submit" class="headerbtn" value="Logout" onClick="location.href='./logout.jsp';">
+<input type="submit" class="headerbtn" value="Logout" onClick="location.href='./account/logout.jsp';">
 </div>
 		</div>
 	</div>

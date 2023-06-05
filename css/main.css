@@ -5,7 +5,7 @@
 label {
 	line-height: 2.0;
 	font-weight: bold;
-	width: 100px;
+	width: 130px;
 	display: inline-block;
 }
 
@@ -64,6 +64,11 @@ border: 1px solid red;
     text-align: left;
     width: 100px;
     margin-left: 6px;
+}
+
+.sidebar {
+border-right: 1px solid #ccc;
+margin-right: 30px;
 }
 
 table {

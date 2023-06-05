@@ -8,27 +8,26 @@
 <link rel="stylesheet" href="./css/main.css">
 
 </head>
-<%@include file="./header.jsp"%>
+<%@include file="../header.jsp"%>
 
 <body>
 	<script>
-	if ("<%=member_id%>" == "null"){
-		window.location.href="./login.jsp";
-	}
+	if ("<%=member_id%>" == "null") {
+			window.location.href = "./login.jsp";
+		}
 	</script>
 	<div class="contents">
-		<h1>메인페이지</h1>
-		<div class="grid" style="display: grid; grid-template-column: auto;">
-			<div class="container">
-				<div class="item">
-					<a href="./member_db.jsp">가입자 목록 보기</a>
-				</div>
-				<div class="item">
-					<a href="./board.jsp">게시판</a>
-				</div>
+		<div class="grid"
+			style="display: grid; grid-template-columns: 200px 1fr;">
+
+			<div class="container sidebar">
+				<%@include file="../sidebar.jsp"%>
 			</div>
-		</div>
-	</div>
+			<div class="container">
+			<h1>메인페이지</h1>
+			</div>
+			</div>
+			</div>
 
 </body>
 </html>

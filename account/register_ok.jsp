@@ -13,9 +13,9 @@ request.setCharacterEncoding("UTF-8");
 <head>
 <meta charset="UTF-8">
 <title>Register Success</title>
-<link rel="stylesheet" href="./css/main.css">
+<link rel="stylesheet" href="../css/main.css">
 </head>
-<%@include file="./header.jsp" %>
+<%@include file="../header.jsp" %>
 
 <body>
 <div class="contents">
@@ -141,7 +141,7 @@ request.setCharacterEncoding("UTF-8");
 	pstmt.executeUpdate();
 	%>
 	<script>
-	setTimeout(function() { window.location.href="./login.jsp";}, 1000);
+	setTimeout(function() { window.location.href="../login.jsp";}, 1000);
 	</script>
 	<%
 	} catch(Exception e) {
@@ -149,7 +149,7 @@ request.setCharacterEncoding("UTF-8");
 	<br><br>
 	<span style="color: red;">잘못된 접근입니다.</span>
 	<script>
-	setTimeout(function() { window.location.href="./register.jsp";}, 1000);
+	setTimeout(function() { window.location.href="../register.jsp";}, 1000);
 	</script>
 	<%
 	}

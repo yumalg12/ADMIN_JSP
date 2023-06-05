@@ -10,7 +10,7 @@
 <script>
 	<%session.removeAttribute("member_id");%>
 	alert("로그아웃에 성공하였습니다.");
-	setTimeout(function() { window.location.href="./login.jsp";}, 100);
+	setTimeout(function() { window.location.href="../login.jsp";}, 100);
 </script>
 </body>
 </html>

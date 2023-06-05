@@ -1,0 +1,122 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%
+// 인코딩
+request.setCharacterEncoding("UTF-8");
+%>    
+<%@page import="java.sql.DriverManager"%>
+<%@page import="java.sql.Connection"%>
+<%@page import="java.sql.PreparedStatement"%>
+<%@page import="java.sql.ResultSet"%>
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="./css/main.css">
+<title>My Information</title>
+<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
+
+</head>
+<%@include file="./header.jsp" %>
+
+<body>
+	<div class="contents">
+		<div class="grid"
+			style="display: grid; grid-template-columns: 200px 1fr;">
+
+			<div class="container sidebar">
+				<%@include file="./sidebar.jsp"%>
+			</div>
+			<div class="container">
+
+<h1>비밀번호 변경</h1>
+
+<%
+// DB에서 정보 가져오기
+		Connection conn = null;
+
+		String url = "jdbc:mysql://localhost:3306/register";
+		String id = "root"; //MySQL에 접속을 위한 계정의 ID
+		String pwd = "mysql"; //MySQL에 접속을 위한 계정의 암호
+		Class.forName("com.mysql.jdbc.Driver");
+		conn = DriverManager.getConnection(url, id, pwd);
+
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		String sql = "SELECT * FROM `t_shopping_member` where MEMBER_ID = '"+member_id+"' order by JOINDATE DESC;";
+
+		pstmt = conn.prepareStatement(sql);
+
+		rs = pstmt.executeQuery();
+
+		String PW = ""; // 자격 확인용
+		
+		// 결과를 출력
+		while (rs.next()) {
+			String userID = rs.getString("MEMBER_ID");
+			PW = rs.getString("MEMBER_PW");
+			String userName = rs.getString("MEMBER_NAME");
+		%>
+
+<!-- 결과 표시 -->
+<form name="Registerform" action=./account/userinfo_update.jsp method="post" onSubmit="return checkPW();">
+
+
+    <div class="item">
+    <label>아이디</label>
+    <input type="text" name="userID" class="normal" placeholder="userID" value="<%=userID%>" maxlength="8" disabled> 
+</div>
+
+    <div class="item">
+    <label>기존 비밀번호</label>
+    <input type="password" name="PW" class="normal" placeholder="Enter password" value="1q2w3e4r5t6y7u8i9o0p" onInput="checkPWone()" maxlength="20">
+    <span class="notice" id="PWNotice" style="display: none;"> ※영문 소문자, 숫자, 특수문자로 이루어진 4~20자</span>
+    </div>
+    
+    <div class="item">
+    <label>신규 비밀번호</label>
+    <input type="password" name="PW" class="normal" placeholder="Enter password" value="1q2w3e4r5t6y7u8i9o0p" onInput="checkPWone()" maxlength="20">
+    <input type="password" class="normal" name="PWcheck" style="display: none;" placeholder="password check" oninput="checkPWtwo()" maxlength="20">
+    <span class="notice" id="PWNotice" style="display: none;"> ※영문 소문자, 숫자, 특수문자로 이루어진 4~20자</span>
+    </div>
+
+    <div class="item">
+        <label>이름</label>
+    <input type="text" name="userName" class="normal" placeholder="username" value="<%=userName%>" maxlength="5" disabled>
+</div>
+
+
+<%} %>
+
+<input type="submit" value="Save" id="save" name="save">
+</form>
+
+		</div>
+	</div>
+</div>
+<script>
+
+function checkPW() {
+	if(document.Registerform["PW"].value == ""){
+		alert("비밀번호를 입력하십시오.");
+		setTimeout(function() { (document.Registerform.PW).focus(); }, 100);
+		return false;
+	} else if (!('<%=PW%>' === document.Registerform["PW"].value)){
+		alert("올바른 비밀번호를 입력하십시오.");
+		return false;
+	} else if ('<%=PW%>' === document.Registerform["PW"].value){
+		return true;
+	} else {
+		alert("오류가 발생했습니다.");
+		return false;
+	}
+}
+
+</script>
+<script src="./script/register.js"></script>
+</body>
+
+
+</html>

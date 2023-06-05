@@ -65,9 +65,16 @@ function execDaumPostcode() {
 <%@include file="./header.jsp" %>
 
 <body>
-<div class="contents">
+	<div class="contents">
+		<div class="grid"
+			style="display: grid; grid-template-columns: 200px 1fr;">
 
-<h1>내 정보 확인</h1>
+			<div class="container sidebar">
+				<%@include file="../sidebar.jsp"%>
+			</div>
+			<div class="container">
+
+<h1>내 정보 수정</h1>
 
 <%
 // DB에서 정보 가져오기
@@ -113,23 +120,23 @@ function execDaumPostcode() {
 		%>
 
 <!-- 결과 표시 -->
-<form name="Updateform" action=./userinfo_update.jsp method="post" onSubmit="return checkPW();">
+<form name="Registerform" action=./account/userinfo_update.jsp method="post" onSubmit="return checkPW();">
 
 
     <div class="item">
     <label>아이디</label>
-    <input type="text" name="userID" class="normal" placeholder="userID" value="<%=userID%>" disabled> 
+    <input type="text" name="userID" class="normal" placeholder="userID" value="<%=userID%>" maxlength="8" disabled> 
 </div>
 
     <div class="item">
     <label>비밀번호</label>
-    <input type="password" name="PW" class="normal" placeholder="Enter password" value="1q2w3e4r5t6y7u8i9o0p" disabled>
-    <span class="btn" onclick="" id="changePW" style="">비밀번호 변경</span>
+    <input type="password" name="PW" class="normal" placeholder="Enter password" value="1q2w3e4r5t6y7u8i9o0p" onInput="checkPWone()" disabled maxlength="20">
+    <span class="notice" id="PWNotice" style="display: none;"> ※영문 소문자, 숫자, 특수문자로 이루어진 4~20자</span>
     </div>
 
     <div class="item">
         <label>이름</label>
-    <input type="text" name="userName" class="normal" placeholder="username" value="<%=userName%>" disabled>
+    <input type="text" name="userName" class="normal" placeholder="username" value="<%=userName%>" maxlength="5" disabled>
 </div>
 
     <div class="item">
@@ -140,18 +147,18 @@ function execDaumPostcode() {
 
     <div class="item">
     <label>생년월일</label>
-    <input type="text" value="<%=bYear %>" class="normal" style="width: 50px;" disabled><span>년 </span>
-    <input type="text" value="<%=bMon %>" class="normal" style="width: 50px;" disabled><span>월 </span>
-    <input type="text" value="<%=bDay %>" class="normal" style="width: 50px;" disabled><span>일 </span>
+    <input type="text" value="<%=bYear %>" class="normal" style="width: 50px;" maxlength="4" disabled><span>년 </span>
+    <input type="text" value="<%=bMon %>" class="normal" style="width: 50px;" maxlength="2" disabled><span>월 </span>
+    <input type="text" value="<%=bDay %>" class="normal" style="width: 50px;" maxlength="2" disabled><span>일 </span>
 </div>
 
     <div class="item">
     <label>전화번호</label>
-    <input type="text" class="normal" style="width: 50px;" name="num1" value="<%=num1%>" disabled> 
+    <input type="text" class="normal" style="width: 50px;" name="num1" value="<%=num1%>" onInput="checkPhone(this.name)" disabled maxlength="3"> 
 	<span>-</span> 
-	<input type="text" class="normal" style="width: 50px;" name="num2" value="<%=num2%>" disabled> 
+	<input type="text" class="normal" style="width: 50px;" name="num2" value="<%=num2%>" onInput="checkPhone(this.name)" disabled maxlength="4"> 
 	<span>-</span> 
-	<input type="text" class="normal" style="width: 50px;" name="num3" value="<%=num3%>" disabled> 
+	<input type="text" class="normal" style="width: 50px;" name="num3" value="<%=num3%>" onInput="checkPhone(this.name)" disabled maxlength="4"> 
 	<br>
 	<label></label>
 	<input type="checkbox" id="SMSYN" name="SMSYN" <%if (SMSYN.equals("Y")) out.print("checked");%> disabled><span>SMS 수신 동의</span>
@@ -159,9 +166,9 @@ function execDaumPostcode() {
 
     <div class="item">
     <label>이메일</label>
-    <input type="text" name="email1" class="normal" value="<%=email1%>" disabled>
+    <input type="text" name="email1" class="normal" value="<%=email1%>" onInput="checkMail1()" disabled>
     <span>@</span>
-    <input type="text" name="email2" class="normal" value="<%=email2%>" disabled>
+    <input type="text" name="email2" class="normal" value="<%=email2%>" onInput="checkMail2()" disabled>
 	<br>
 	<label></label>
     <input type="checkbox" id="emailYN" name="emailYN" <%if (emailYN.equals("Y")) out.print("checked");%> disabled><span>이메일 수신 동의</span>
@@ -195,13 +202,15 @@ function confirmDelete() {
 	alert("계정 삭제가 취소되었습니다.");
     return false;
   }
-	setTimeout(function() { window.location.href="./user_delete.jsp";}, 100);
+	setTimeout(function() { window.location.href="./account/user_delete.jsp";}, 100);
 }
 </script>
 </div>
 <div id="modifybtn">
 <button onClick="modifyInfo()">Modify</button>
-</div>
+			</div>
+		</div>
+	</div>
 </div>
 <script>
 function modifyInfo() {
@@ -214,7 +223,7 @@ function modifyInfo() {
 				elements.removeAttribute("disabled");
 			}
 		}
-		document.Updateform["PW"].value = "";
+		document.Registerform["PW"].value = "";
 		document.getElementById("modifybtn").style.display = "none";
 		document.getElementById("infobtns").style.display = "";
 		document.getElementById("adrsSearchBtn").style.display = "";
@@ -222,14 +231,14 @@ function modifyInfo() {
 	}
 	
 function checkPW() {
-	if(document.Updateform["PW"].value == ""){
+	if(document.Registerform["PW"].value == ""){
 		alert("비밀번호를 입력하십시오.");
-		setTimeout(function() { (document.Updateform.PW).focus(); }, 100);
+		setTimeout(function() { (document.Registerform.PW).focus(); }, 100);
 		return false;
-	} else if (!('<%=PW%>' === document.Updateform["PW"].value)){
+	} else if (!('<%=PW%>' === document.Registerform["PW"].value)){
 		alert("올바른 비밀번호를 입력하십시오.");
 		return false;
-	} else if ('<%=PW%>' === document.Updateform["PW"].value){
+	} else if ('<%=PW%>' === document.Registerform["PW"].value){
 		return true;
 	} else {
 		alert("오류가 발생했습니다.");

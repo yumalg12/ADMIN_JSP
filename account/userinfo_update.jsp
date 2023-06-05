@@ -100,7 +100,7 @@ request.setCharacterEncoding("UTF-8");
 		}
 </script>
 	<script>
-	setTimeout(function() { window.location.href="./userinfo.jsp";}, 100);
+	setTimeout(function() { window.location.href="../userinfo.jsp";}, 100);
 	</script>
 </body>
 </html>

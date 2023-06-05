@@ -15,13 +15,13 @@ request.setCharacterEncoding("UTF-8");
 <link rel="stylesheet" href="./css/main.css">
 
 </head>
-<%@include file="./header.jsp" %>
+<%@include file="../header.jsp" %>
 
 <body>
 <div class="contents">
 
 <h1>로그인</h1>
-<form name="Loginform" action="./login_ok.jsp" method="post" style="display: inline;">
+<form name="Loginform" action="./account/login_ok.jsp" method="post" style="display: inline;">
     <label>아이디</label>
     <input type="text" class="normal" id="userID" name="userID" placeholder="user ID" maxlength="8"> 
     
@@ -32,7 +32,7 @@ request.setCharacterEncoding("UTF-8");
     <br>    
     <input type="submit" value="Login">
 </form>
-    <input type="submit" value="Register" onClick=(location.href="./register.jsp")>
+    <input type="submit" value="Register" onClick=(location.href='./register.jsp')>
     
     
 <script src="http://code.jquery.com/jquery-latest.js"></script> 
