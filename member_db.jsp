@@ -11,10 +11,33 @@
 <head>
 <meta charset="UTF-8">
 <title>Member List from DB</title>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <%@include file="./header.jsp" %>
 
 <body>
+<%
+String sqlSelect = request.getParameter("sqlSelect");
+String queryVal = request.getParameter("queryVal");
+%>
+<script>
+$(document).ready(function() {
+    var sqlSelect = "<%=sqlSelect%>";
+    var queryVal = "<%=queryVal%>";
+
+    if (sqlSelect !== null && queryVal !== null && queryVal !== "") {
+        document.SearchQueryForm.sqlSelect.value = sqlSelect;
+        queryValInput();
+        document.getElementById("sqlInput").value = queryVal;
+        document.getElementById("sqlGender").value = queryVal;
+        document.getElementById("sqlYN").value = queryVal;
+    } else {
+        document.SearchQueryForm.sqlSelect.value = "MEMBER_ID";
+        document.getElementById("sqlInput").value = "";
+    }
+});
+</script>
+
 	<div class="contents">
 		<div class="grid"
 			style="display: grid; grid-template-columns: 200px 1fr;">
@@ -24,11 +47,10 @@
 			</div>
 			<div class="container"><h1>전체회원조회</h1>
 <div>
-    <form name="SearchQueryForm" method="post" style="display: inline;" action="./member_db.jsp">
+	<form name="SearchQueryForm" method="post" style="display: inline;" accept-charset="UTF-8" action="./member_db.jsp">
 		<label style="width: 80px;">검색 조건: </label>
 		<select class="normal" id="sqlSelect" name="sqlSelect" onChange=queryValInput()>
 			<option value="MEMBER_ID">ID</option>
-			<option value="MEMBER_NAME">이름</option>
 			<option value="MEMBER_GENDER">성별</option>
 			<option value="SMSSTS_YN">SMS 수신여부</option>
 			<option value="EMAILSTS_YN">이메일 수신여부</option>
@@ -74,10 +96,11 @@
 
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		
-		String sqlSelect = request.getParameter("sqlSelect");
-		String queryVal = request.getParameter("queryVal");
+
 		String sqlSearch = "";
+		
+		sqlSelect = request.getParameter("sqlSelect");
+		queryVal = request.getParameter("queryVal");
 		
 		if (sqlSelect != null && queryVal != null && queryVal != ""){
 			sqlSearch = "where " + sqlSelect + "='" + queryVal + "' ";
@@ -155,7 +178,9 @@ function hide(id){
 
 function queryValInput() {
 	var selectVal = document.SearchQueryForm.sqlSelect.value;
-	
+	for (var i = 0; i < 3; i++){			
+		document.SearchQueryForm.queryVal[i].value = "";
+	}
 	if (selectVal === "MEMBER_GENDER"){
 		hide("sqlInput");
 		show("sqlGender");
