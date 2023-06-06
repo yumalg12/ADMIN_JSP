@@ -13,7 +13,6 @@ request.setCharacterEncoding("UTF-8");
 <html>
 <head>
 <meta charset="UTF-8">
-<link rel="stylesheet" href="./css/main.css">
 <title>My Information</title>
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 
@@ -61,6 +60,7 @@ function execDaumPostcode() {
   }).open();
 }
 </script>
+
 </head>
 <%@include file="./header.jsp" %>
 
@@ -70,7 +70,7 @@ function execDaumPostcode() {
 			style="display: grid; grid-template-columns: 200px 1fr;">
 
 			<div class="container sidebar">
-				<%@include file="../sidebar.jsp"%>
+				<%@include file="./sidebar.jsp"%>
 			</div>
 			<div class="container">
 
@@ -89,7 +89,7 @@ function execDaumPostcode() {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 
-		String sql = "SELECT * FROM `t_shopping_member` where MEMBER_ID = '"+member_id+"' order by JOINDATE DESC;";
+		String sql = "SELECT * FROM `t_shopping_member` where MEMBER_ID = '"+member_id+"';";
 
 		pstmt = conn.prepareStatement(sql);
 
@@ -120,12 +120,11 @@ function execDaumPostcode() {
 		%>
 
 <!-- 결과 표시 -->
-<form name="Registerform" action=./account/userinfo_update.jsp method="post" onSubmit="return checkPW();">
-
+<form name="Registerform" action=./account/userinfo_update.jsp method="post" onSubmit="return updateForm();">
 
     <div class="item">
     <label>아이디</label>
-    <input type="text" name="userID" class="normal" placeholder="userID" value="<%=userID%>" maxlength="8" disabled> 
+    <input type="text" name="userID" class="normal" placeholder="userID" value="<%=userID%>" maxlength="8" disabled>
 </div>
 
     <div class="item">
@@ -168,7 +167,7 @@ function execDaumPostcode() {
     <label>이메일</label>
     <input type="text" name="email1" class="normal" value="<%=email1%>" onInput="checkMail1()" disabled>
     <span>@</span>
-    <input type="text" name="email2" class="normal" value="<%=email2%>" onInput="checkMail2()" disabled>
+    <input type="text" name="email2" class="normal" value="<%=email2%>" onInput="checkMail2_2()" disabled>
 	<br>
 	<label></label>
     <input type="checkbox" id="emailYN" name="emailYN" <%if (emailYN.equals("Y")) out.print("checked");%> disabled><span>이메일 수신 동의</span>
@@ -176,12 +175,12 @@ function execDaumPostcode() {
 
     <div class="item">
     <label>주소</label>
-	<span class="addressdiv" style="margin-left: 0px;">우편번호: </span><input value="<%=zipcode%>" class="normal" type="text" id="zipcode" name="zipcode" disabled> 
+	<span class="addressdiv" style="margin-left: 0px;">우편번호: </span><input value="<%=zipcode%>" class="normal" type="text" id="zipcode" name="zipcode" onInput=checkZipCode() disabled> 
 	<span class="btn" onClick="javascript:execDaumPostcode()" id="adrsSearchBtn" style="display: none;">우편번호 검색</span>
 	<br>
-	<label></label><span class="addressdiv">지번 주소: </span><input value="<%=jibunAddress%>" class="normal" type="text" id="jibunAddress" name="jibunAddress" style="width: 300px;" disabled>
+	<label></label><span class="addressdiv">지번 주소: </span><input value="<%=jibunAddress%>" class="normal" type="text" id="jibunAddress" name="jibunAddress" style="width: 300px;" onInput=checkAddress(this.name) disabled>
 	<br>
-	<label></label><span class="addressdiv">도로명 주소: </span><input value="<%=roadAddress%>" class="normal" type="text" id="roadAddress" name="roadAddress" style="width: 300px;" disabled>
+	<label></label><span class="addressdiv">도로명 주소: </span><input value="<%=roadAddress%>" class="normal" type="text" id="roadAddress" name="roadAddress" style="width: 300px;" onInput=checkAddress(this.name) disabled>
 	<br>
 	<label></label><span class="addressdiv">나머지 주소: </span><input value="<%=namujiAddress%>" class="normal" type="text" name="namujiAddress" style="width: 300px;" disabled>
 </div>
@@ -212,6 +211,7 @@ function confirmDelete() {
 		</div>
 	</div>
 </div>
+<script src="./script/register.js"></script>
 <script>
 function modifyInfo() {
 	var names = [ "PW", "num1", "num2", "num3", "SMSYN", "email1", "email2",
@@ -246,8 +246,56 @@ function checkPW() {
 	}
 }
 
+function checkMail2_2() {
+	var regex = /^[a-zA-Z0-9]+[\.][a-z]+$/;
+	
+	if(regex.test(document.Registerform["email2"].value)){
+		doneCSS("email2");
+		return true;
+	} else {
+		falseCSS("email2");
+		return false;
+	}
+}
+
+function updateForm() {
+	if (checkPW()) {
+		if (!checkPhone("num1") || !checkPhone("num2") || !checkPhone("num3")) {
+			alert("올바른 전화번호를 입력하십시오.");
+			setTimeout(function() {
+				var elements = document.getElementsByClassName("false");
+				if (elements.length > 0) {
+					elements[0].focus();
+				}
+			}, 100);
+			return false;
+		} else if (!checkMail1() || !checkMail2_2()) {
+			alert("올바른 이메일 주소를 입력하십시오.");
+			setTimeout(function() {
+				var elements = document.getElementsByClassName("false");
+				if (elements.length > 0) {
+					elements[0].focus();
+				}
+			}, 100);
+			return false;
+		} else if (!checkZipCode() || (!checkAddress("roadAddress") && !checkAddress("jibunAddress"))) {
+			alert("올바른 주소를 입력하십시오.");
+			setTimeout(function() {
+				var elements = document.getElementsByClassName("false");
+				if (elements.length > 0) {
+					elements[0].focus();
+				}
+			}, 100);
+			return false;
+		} else {
+			return true;
+		}
+	} else {
+		return false;
+	}
+
+}
 </script>
-<script src="./script/register.js"></script>
 </body>
 
 

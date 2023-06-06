@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="./css/main.css">
 
 <style>
 #header {
@@ -58,6 +59,9 @@ String member_id = (String) session.getAttribute("member_id");
 	<script>
 	if ("<%=member_id %>" == "null"){
 		document.getElementById("headerUserInfo").style.display = "none";
+		document.getElementById("header").onclick = function() {
+			window.location.href="./login.jsp";
+		};
 	}
 	</script>
 </body>

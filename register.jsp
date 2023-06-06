@@ -12,7 +12,6 @@ request.setCharacterEncoding("UTF-8");
 <head>
 <meta charset="UTF-8">
 <title>Member Register</title>
-<link rel="stylesheet" href="./css/main.css">
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 
 <script>
@@ -101,7 +100,7 @@ function fn_overlapped() {
     <label>아이디</label>
     <input type="text" class="normal" id="userID" name="userID" placeholder="user ID" oninput="checkID(this.value)" maxlength="8"> 
     <input type="hidden" id="userIDval" name="userIDval"> 
-    <input type="button" class="btn" id="checkIDdup" value="중복체크" onClick="fn_overlapped();" style="display: none;">
+    <input type="button" class="btn" id="checkIDdup" value="중복확인" onClick="fn_overlapped();" style="display: none;">
     <span class="notice" id="IDNotice" style="display: none;"> ※영문 소문자, 숫자로 이루어진 5~8자</span>
 </div>
 

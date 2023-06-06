@@ -12,7 +12,7 @@ request.setCharacterEncoding("UTF-8");
 <html>
 <head>
 <meta charset="UTF-8">
-<title>User Account Delete</title>
+<title>Update Success</title>
 
 </head>
 <body>
@@ -20,7 +20,9 @@ request.setCharacterEncoding("UTF-8");
     <%
 	String member_id = (String) session.getAttribute("member_id");
 
-	// DB 유저 정보 확인 및 제거
+    String PW=request.getParameter("PW");
+
+	// DB 유저 정보 업데이트
 	Connection conn = null;
 
 	String url = "jdbc:mysql://localhost:3306/register";
@@ -32,7 +34,8 @@ request.setCharacterEncoding("UTF-8");
 	PreparedStatement pstmt = null;
 	
 	
-	String sql = "delete from t_shopping_member "+
+	String sql = "update t_shopping_member "+
+			"set MEMBER_PW = '"+PW+"' "+
 			"where MEMBER_ID = '"+member_id+"';";
 
 	pstmt = conn.prepareStatement(sql);
@@ -44,16 +47,14 @@ request.setCharacterEncoding("UTF-8");
 	%>
 	<br><br>
 	<span>잘못된 접근입니다.</span>
-
 	<%
 	}
 	conn.close();
 	%>
 
 	<script>
-	<%session.removeAttribute("member_id");%>
-	alert("계정 삭제가 완료되었습니다.");
-	setTimeout(function() { window.location.href="../main.jsp";}, 100);
+	alert("비밀번호 변경이 완료되었습니다. 새로운 비밀번호로 로그인하십시오.");
+	setTimeout(function() { window.location.href="./logout.jsp";}, 100);
 	</script>
 </body>
 </html>

@@ -16,3 +16,10 @@
 	<div class="item">
 		<a href="javascript:alert('개발 예정입니다.');">게시판</a>
 	</div>
+	
+	<script>
+if ("<%=member_id %>" == "null") {
+	alert("잘못된 접근입니다.");
+	setTimeout(function() { window.location.href="./login.jsp";}, 100);
+}
+</script>

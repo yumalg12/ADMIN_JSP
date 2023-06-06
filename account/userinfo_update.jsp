@@ -12,7 +12,7 @@ request.setCharacterEncoding("UTF-8");
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Modify Success</title>
+<title>Update Success</title>
 
 </head>
 <body>
@@ -100,6 +100,7 @@ request.setCharacterEncoding("UTF-8");
 		}
 </script>
 	<script>
+	alert("내 정보 수정이 완료되었습니다.");
 	setTimeout(function() { window.location.href="../userinfo.jsp";}, 100);
 	</script>
 </body>

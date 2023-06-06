@@ -11,7 +11,6 @@
 <head>
 <meta charset="UTF-8">
 <title>Member List from DB</title>
-<link rel="stylesheet" href="./css/main.css">
 </head>
 <%@include file="./header.jsp" %>
 
@@ -25,12 +24,27 @@
 			</div>
 			<div class="container"><h1>전체회원조회</h1>
 <div>
-    <form name="SearchQueryForm" method="post" style="display: inline;">
-    <label>SQL Query: </label>
-    <input type="text" class="normal" name="query" placeholder="where ..."  value ="" style="width: 300px;">
-        <input type="submit" value="Submit">
-        </form>
-          <input role="switch" type="checkbox" />
+    <form name="SearchQueryForm" method="post" style="display: inline;" action="./member_db.jsp">
+		<label style="width: 80px;">검색 조건: </label>
+		<select class="normal" id="sqlSelect" name="sqlSelect" onChange=queryValInput()>
+			<option value="MEMBER_ID">ID</option>
+			<option value="MEMBER_NAME">이름</option>
+			<option value="MEMBER_GENDER">성별</option>
+			<option value="SMSSTS_YN">SMS 수신여부</option>
+			<option value="EMAILSTS_YN">이메일 수신여부</option>
+		</select> 
+		<input type="text" class="normal" id="sqlInput" name="queryVal" placeholder="value" style="width: 200px;"> 
+		<select class="normal" id="sqlGender" name="queryVal" style="display: none; width: 200px;" disabled>
+			<option value="female">여자</option>
+			<option value="male">남자</option>
+		</select> 
+		<select class="normal" id="sqlYN" name="queryVal" style="display: none; width: 200px;" disabled>
+			<option value="Y">Y</option>
+			<option value="N">N</option>
+		</select> 
+
+		<input type="submit" value="Submit">
+    </form>
         
 </div>
 <br>
@@ -60,15 +74,28 @@
 
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
+		
+		String sqlSelect = request.getParameter("sqlSelect");
+		String queryVal = request.getParameter("queryVal");
+		String sqlSearch = "";
+		
+		if (sqlSelect != null && queryVal != null && queryVal != ""){
+			sqlSearch = "where " + sqlSelect + "='" + queryVal + "' ";
+		} else {
+			sqlSearch = "";
+		}
 
-		String sql = "SELECT MEMBER_ID, MEMBER_NAME, MEMBER_GENDER, TEL1, TEL2, TEL3, SMSSTS_YN, EMAIL1, EMAIL2, EMAILSTS_YN, ZIPCODE, ROADADDRESS, NAMUJIADDRESS, MEMBER_BIRTH_Y, MEMBER_BIRTH_M, MEMBER_BIRTH_D, JOINDATE FROM `t_shopping_member` order by JOINDATE DESC;";
+		String sql = "SELECT MEMBER_ID, MEMBER_NAME, MEMBER_GENDER, TEL1, TEL2, TEL3, SMSSTS_YN, EMAIL1, EMAIL2, EMAILSTS_YN, ZIPCODE, ROADADDRESS, NAMUJIADDRESS, MEMBER_BIRTH_Y, MEMBER_BIRTH_M, MEMBER_BIRTH_D, JOINDATE FROM `t_shopping_member` "
+				+ sqlSearch
+				+"order by JOINDATE DESC;";
+
 		pstmt = conn.prepareStatement(sql);
 
 		// 4) 실행
 		rs = pstmt.executeQuery();
 
 		// 5) 결과를 테이블에 출력
-int i = 1;
+		int i = 1;
 		while (rs.next()) {
 			Integer idx = i++;
 			String userID = rs.getString("MEMBER_ID");
@@ -111,10 +138,41 @@ int i = 1;
 </div>
 </div>
 </div>
+
 <script>
-if ("<%=member_id %>" == "null") {
-	alert("잘못된 접근입니다.");
-	setTimeout(function() { window.location.href="./login.jsp";}, 100);
+
+function show(id){
+	var object = document.getElementById(id);
+	object.disabled = false;
+	object.style.display = "";
+}
+
+function hide(id){
+	var object = document.getElementById(id);
+	object.disabled = true;
+	object.style.display = "none";
+}
+
+function queryValInput() {
+	var selectVal = document.SearchQueryForm.sqlSelect.value;
+	
+	if (selectVal === "MEMBER_GENDER"){
+		hide("sqlInput");
+		show("sqlGender");
+		hide("sqlYN");
+	} else if (selectVal === "SMSSTS_YN"){
+		hide("sqlInput");
+		hide("sqlGender");
+		show("sqlYN");
+	} else if (selectVal === "EMAILSTS_YN"){
+		hide("sqlInput");
+		hide("sqlGender");
+		show("sqlYN");
+	} else {
+		show("sqlInput");
+		hide("sqlGender");
+		hide("sqlYN");
+	}
 }
 </script>
 

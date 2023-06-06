@@ -13,7 +13,6 @@ request.setCharacterEncoding("UTF-8");
 <html>
 <head>
 <meta charset="UTF-8">
-<link rel="stylesheet" href="./css/main.css">
 <title>My Information</title>
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 
@@ -45,7 +44,7 @@ request.setCharacterEncoding("UTF-8");
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 
-		String sql = "SELECT * FROM `t_shopping_member` where MEMBER_ID = '"+member_id+"' order by JOINDATE DESC;";
+		String sql = "SELECT MEMBER_ID, MEMBER_PW FROM `t_shopping_member` where MEMBER_ID = '"+member_id+"';";
 
 		pstmt = conn.prepareStatement(sql);
 
@@ -57,11 +56,10 @@ request.setCharacterEncoding("UTF-8");
 		while (rs.next()) {
 			String userID = rs.getString("MEMBER_ID");
 			PW = rs.getString("MEMBER_PW");
-			String userName = rs.getString("MEMBER_NAME");
 		%>
 
 <!-- 결과 표시 -->
-<form name="Registerform" action=./account/userinfo_update.jsp method="post" onSubmit="return checkPW();">
+<form name="Registerform" action=./account/userpw_update.jsp method="post" onSubmit="return changePW();">
 
 
     <div class="item">
@@ -71,49 +69,56 @@ request.setCharacterEncoding("UTF-8");
 
     <div class="item">
     <label>기존 비밀번호</label>
-    <input type="password" name="PW" class="normal" placeholder="Enter password" value="1q2w3e4r5t6y7u8i9o0p" onInput="checkPWone()" maxlength="20">
-    <span class="notice" id="PWNotice" style="display: none;"> ※영문 소문자, 숫자, 특수문자로 이루어진 4~20자</span>
+    <input type="password" name="PWold" class="normal" placeholder="Enter password" value="" maxlength="20">
     </div>
     
     <div class="item">
     <label>신규 비밀번호</label>
-    <input type="password" name="PW" class="normal" placeholder="Enter password" value="1q2w3e4r5t6y7u8i9o0p" onInput="checkPWone()" maxlength="20">
+    <input type="password" name="PW" class="normal" placeholder="Enter password" value="" onInput="checkPWone(); checkPWtwo()" maxlength="20">
     <input type="password" class="normal" name="PWcheck" style="display: none;" placeholder="password check" oninput="checkPWtwo()" maxlength="20">
     <span class="notice" id="PWNotice" style="display: none;"> ※영문 소문자, 숫자, 특수문자로 이루어진 4~20자</span>
     </div>
-
-    <div class="item">
-        <label>이름</label>
-    <input type="text" name="userName" class="normal" placeholder="username" value="<%=userName%>" maxlength="5" disabled>
-</div>
-
 
 <%} %>
 
 <input type="submit" value="Save" id="save" name="save">
 </form>
-
 		</div>
-	</div>
 </div>
+	</div>
+
 <script>
 
-function checkPW() {
-	if(document.Registerform["PW"].value == ""){
-		alert("비밀번호를 입력하십시오.");
+function changePW() {
+	if(document.Registerform["PWold"].value == ""){
+		alert("기존 비밀번호를 입력하십시오.");
+		setTimeout(function() { (document.Registerform.PWold).focus(); }, 100);
+		return false;
+	} else if(document.Registerform["PW"].value == ""){
+		alert("변경할 새 비밀번호를 입력하십시오.");
 		setTimeout(function() { (document.Registerform.PW).focus(); }, 100);
 		return false;
-	} else if (!('<%=PW%>' === document.Registerform["PW"].value)){
-		alert("올바른 비밀번호를 입력하십시오.");
+	} else if (!checkPWone() || !checkPWtwo()) {
+		alert("비밀번호를 확인하십시오.");
+		setTimeout(function () {document.Registerform.PWcheck.focus();}, 100);
 		return false;
-	} else if ('<%=PW%>' === document.Registerform["PW"].value){
-		return true;
+	} else if (!('<%=PW%>' === document.Registerform["PWold"].value)){
+		setTimeout(function() { (document.Registerform.PWold).focus(); }, 100);
+		alert("비밀번호가 틀렸습니다.");
+		return false;
+	} else if ("<%=PW%>" === document.Registerform["PW"].value){
+		alert("변경할 비밀번호가 기존 비밀번호와 동일합니다.");
+		setTimeout(function() { (document.Registerform.PW).focus(); }, 100);
+		return false;
 	} else {
-		alert("오류가 발생했습니다.");
-		return false;
+		if ("<%=PW%>" === document.Registerform["PWold"].value) {
+				return true;
+			} else {
+				alert("비밀번호 변경에 실패했습니다.");
+				return false;
+			}
+		}
 	}
-}
-
 </script>
 <script src="./script/register.js"></script>
 </body>

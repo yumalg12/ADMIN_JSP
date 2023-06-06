@@ -90,31 +90,34 @@ function checkName() {
 	}
 }
 
-function checkBirth(){
-  var currentDate = new Date();
-  currentDate.setHours(0, 0, 0, 0);
-  var birthDateInput = document.getElementsByName("birthDate")[0].value;
-  var [year, month, day] = birthDateInput.split('-').map(Number);
-  var birthDate = new Date(year, month - 1, day);
+function checkBirth() {
+	var birthDateInput = document.getElementsByName("birthDate")[0].value;
+	if (birthDateInput !== "") {
+		var currentDate = new Date();
+		currentDate.setHours(0, 0, 0, 0);
+		var [year, month, day] = birthDateInput.split('-').map(Number);
+		var birthDate = new Date(year, month - 1, day);
 
-  var age = (currentDate - birthDate) / (1000 * 60 * 60 * 24 * 365);
-  console.log(age);
-  
-	if (age < 14 && 0 <= age) {
-		falseCSS("birthDate");
-		document.getElementById("ageNotice").style.display = "";
-		document.getElementById("ageNotice2").style.display = "none";
-		return false;
-	} else if (age < 0) {
-		falseCSS("birthDate");
-		document.getElementById("ageNotice").style.display = "none";
-		document.getElementById("ageNotice2").style.display = "";
-		return false;
+		var age = (currentDate - birthDate) / (1000 * 60 * 60 * 24 * 365);
+
+		if (age < 14 && 0 <= age) {
+			falseCSS("birthDate");
+			document.getElementById("ageNotice").style.display = "";
+			document.getElementById("ageNotice2").style.display = "none";
+			return false;
+		} else if (age < 0) {
+			falseCSS("birthDate");
+			document.getElementById("ageNotice").style.display = "none";
+			document.getElementById("ageNotice2").style.display = "";
+			return false;
+		} else {
+			doneCSS("birthDate");
+			document.getElementById("ageNotice").style.display = "none";
+			document.getElementById("ageNotice2").style.display = "none";
+			return true;
+		}
 	} else {
-		doneCSS("birthDate");
-		document.getElementById("ageNotice").style.display = "none";
-		document.getElementById("ageNotice2").style.display = "none";
-		return true;
+		return false;
 	}
 }
 
@@ -189,7 +192,7 @@ function checkMail1() {
 function checkMail2() {
 	var regex = /^[a-zA-Z0-9]+[\.][a-z]+$/;
 	
-	if(regex.test(document.getElementsByName("email2")[1].value)){
+	if(regex.test(document.getElementsByName("email2")[0].value || regex.test(document.getElementsByName("email2")[1].value))){
 		doneCSSName("email2", 1);
 		return true;
 	} else {
@@ -225,98 +228,69 @@ function checkAddress(name) {
 }
 
 function validateForm() {
-
-	if (checkID(document.Registerform.userID.value)) {
-
-		if (document.Registerform.userID.disabled) {
-			
-			//pw check
-			if (checkPWone() && checkPWtwo()) {
-
-				// name check
-				if (checkName()) {
-
-					//gender check
-					if (document.Registerform.gender.value != '') {
-
-						//birth check
-						if (checkBirth()) {
-
-							//Phone number check
-							if (checkPhoneOne() && checkPhone(num2) && checkPhone(num3)) {
-
-								//email check
-								if (checkMail1() && checkMail2()) {
-
-									// address check
-									if (checkZipCode() && (checkAddress("roadAddress") || checkAddress("jibunAddress")) ) {
-
-										return true;
-
-									} else {
-										alert("올바른 주소를 입력하십시오.");
-										setTimeout(function() {
-											var elements = document.getElementsByClassName("false");
-											if (elements.length > 0) {
-												elements[0].focus();
-											}
-										}, 100);
-									}
-
-								} else {
-									alert("올바른 이메일 주소를 입력하십시오.");
-									setTimeout(function() {
-										var elements = document.getElementsByClassName("false");
-										if (elements.length > 0) {
-											elements[0].focus();
-										}
-									}, 100);
-								}
-
-							} else {
-								alert("올바른 전화번호를 입력하십시오.");
-								setTimeout(function() {
-									var elements = document.getElementsByClassName("false");
-									if (elements.length > 0) {
-										elements[0].focus();
-									}
-								}, 100);
-							}
-
-						} else {
-							alert("올바른 생년월일을 입력하십시오.");
-							setTimeout(function() { (document.Registerform.birthDate).focus(); }, 100);
-							return false;
-						}
-
-					} else {
-						alert("올바른 이름을 입력하십시오.");
-						setTimeout(function() { (document.Registerform.userName).focus(); }, 100);
-						return false;
-					}
-
-				} else {
-					alert("성별을 선택하십시오.");
-					return false;
-				}
-
-			} else {
-				alert("비밀번호를 확인하십시오.");
-				setTimeout(function() { (document.Registerform.PWcheck).focus(); }, 100);
-				return false;
-			}
-
-		} else {
-			alert("ID 중복 확인이 필요합니다.");
-			setTimeout(function() { (document.Registerform.userID).focus(); }, 100);
-			return false;
-		}
-
-	} else {
-		alert("ID를 다시 입력하십시오.");
-		setTimeout(function() { (document.Registerform.userID).focus(); }, 100);
-		return false;
-	}
+if (!checkID(document.Registerform.userID.value)) {
+  alert("ID를 다시 입력하십시오.");
+  setTimeout(function () {
+    document.Registerform.userID.focus();
+  }, 100);
+  return false;
+} else if (!document.Registerform.userID.disabled) {
+  alert("ID 중복 확인이 필요합니다.");
+  setTimeout(function () {
+    document.Registerform.userID.focus();
+  }, 100);
+  return false;
+} else if (!checkPWone() || !checkPWtwo()) {
+  alert("비밀번호를 확인하십시오.");
+  setTimeout(function () {
+    document.Registerform.PWcheck.focus();
+  }, 100);
+  return false;
+} else if (!checkName()) {
+  alert("올바른 이름을 입력하십시오.");
+  setTimeout(function () {
+    document.Registerform.userName.focus();
+  }, 100);
+  return false;
+} else if (document.Registerform.gender.value === "") {
+  alert("성별을 선택하십시오.");
+  return false;
+} else if (!checkBirth()) {
+  alert("올바른 생년월일을 입력하십시오.");
+  setTimeout(function () {
+    document.Registerform.birthDate.focus();
+  }, 100);
+  return false;
+} else if (!checkPhoneOne() || !checkPhone("num2") || !checkPhone("num3")) {
+  alert("올바른 전화번호를 입력하십시오.");
+  setTimeout(function () {
+    var elements = document.getElementsByClassName("false");
+    if (elements.length > 0) {
+      elements[0].focus();
+    }
+  }, 100);
+  return false;
+} else if (!checkMail1() || !checkMail2()) {
+  alert("올바른 이메일 주소를 입력하십시오.");
+  setTimeout(function () {
+    var elements = document.getElementsByClassName("false");
+    if (elements.length > 0) {
+      elements[0].focus();
+    }
+  }, 100);
+  return false;
+} else if (!checkZipCode() || (!checkAddress("roadAddress") && !checkAddress("jibunAddress"))) {
+  alert("올바른 주소를 입력하십시오.");
+  setTimeout(function () {
+    var elements = document.getElementsByClassName("false");
+    if (elements.length > 0) {
+      elements[0].focus();
+    }
+  }, 100);
+  return false;
+} else {
+  return true;
+}
 
 }
 
