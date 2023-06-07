@@ -101,7 +101,7 @@ request.setCharacterEncoding("UTF-8");
 </script>
 	<script>
 	alert("내 정보 수정이 완료되었습니다.");
-	setTimeout(function() { window.location.href="../userinfo.jsp";}, 100);
+	setTimeout(function() { window.location.href="../myinfo.jsp";}, 100);
 	</script>
 </body>
 </html>

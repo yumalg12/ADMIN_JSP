@@ -15,51 +15,7 @@ request.setCharacterEncoding("UTF-8");
 <meta charset="UTF-8">
 <title>My Information</title>
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
-
-<script>
-function execDaumPostcode() {
-  new daum.Postcode({
-    oncomplete: function(data) {
-      // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
-      
-      // 우편번호와 주소 정보를 초기화한다.
-      document.getElementById('zipcode').value = "";
-      document.getElementById('roadAddress').value = "";
-      document.getElementById('jibunAddress').value = "";
-      
-      // 도로명 주소의 노출 규칙에 따라 주소를 조합한다.
-      // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기한다.
-      var fullRoadAddr = data.roadAddress; // 도로명 주소 변수
-      var extraRoadAddr = ''; // 도로명 조합형 주소 변수
-
-      // 법정동명이 있을 경우 추가한다. (법정리는 제외)
-      // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
-      if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
-        extraRoadAddr += data.bname;
-      }
-      // 건물명이 있고, 공동주택일 경우 추가한다.
-      if(data.buildingName !== '' && data.apartment === 'Y'){
-        extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
-      }
-      // 도로명, 지번 조합형 주소가 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
-      if(extraRoadAddr !== ''){
-        extraRoadAddr = ' (' + extraRoadAddr + ')';
-      }
-      // 도로명, 지번 주소의 유무에 따라 해당 조합형 주소를 추가한다.
-      if(fullRoadAddr !== ''){
-        fullRoadAddr += extraRoadAddr;
-      }
-
-      // 우편번호와 주소 정보를 해당 필드에 넣는다.
-      document.getElementById('zipcode').value = data.zonecode; //5자리 새 우편번호 사용
-      document.getElementById('roadAddress').value = fullRoadAddr;
-      document.getElementById('jibunAddress').value = data.jibunAddress;
-
-      window.close();
-    }
-  }).open();
-}
-</script>
+<script src="./script/execDaumPostcode.js"></script>
 
 </head>
 <%@include file="./header.jsp" %>
@@ -120,7 +76,7 @@ function execDaumPostcode() {
 		%>
 
 <!-- 결과 표시 -->
-<form name="Registerform" action=./account/userinfo_update.jsp method="post" onSubmit="return updateForm();">
+<form name="Registerform" action=./admin/userinfo_update.jsp method="post" onSubmit="return updateForm();">
 
     <div class="item">
     <label>아이디</label>
@@ -188,7 +144,7 @@ function execDaumPostcode() {
 <%} %>
 <div id="infobtns" style="display: none;">
 <input type="submit" value="Save" id="save" name="save">
-<span class="btn" onClick="history.go(0)">Cancel</span>
+<span class="btn" style="padding: 7px 10px; position: relative; top: 0.2px;" onClick="history.go(0)">Cancel</span>
 </div>
 </form>
 <div id="deletebtn" style="display: none;">
@@ -196,12 +152,12 @@ function execDaumPostcode() {
 
 <script>
 function confirmDelete() {
-  var input = prompt("계정을 삭제하시려면 'Delete' 를 입력하십시오.");
+  var input = prompt("계정을 삭제하시려면 'Delete' 를 입력하십시오.\n삭제 후 계정 복구는 불가능합니다.");
   if (input !== 'Delete') {
 	alert("계정 삭제가 취소되었습니다.");
     return false;
   }
-	setTimeout(function() { window.location.href="./account/user_delete.jsp";}, 100);
+	setTimeout(function() { window.location.href="./admin/user_delete.jsp";}, 100);
 }
 </script>
 </div>

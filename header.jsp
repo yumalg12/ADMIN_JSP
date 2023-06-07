@@ -33,10 +33,7 @@
 <body style="margin: 0px;">
 <div id="header">
 		<div class="headerContainer" style="display: grid; grid-template-columns: 1fr 1fr">
-		<div class="headerItem" style="
-    padding-top: 9px;
-    margin-left: 30px;
-" onClick="location.href='./main.jsp'">
+		<div class="headerItem" style="padding-top: 9px; margin-left: 30px;" onClick="location.href='./main.jsp'">
 		<span style="font-size: 16pt; font-weight: bold;">JSP Admin Page</span>
 		</div>
 		<div class="headerItem" id="headerUserInfo" style="
@@ -50,13 +47,20 @@ String member_id = (String) session.getAttribute("member_id");
 <span style="
     font-weight: bold;
     margin-right: 8px;
+    position: relative;
+    top: 1px;
 ">User: <%=member_id %> </span>
-<input type="submit" class="headerbtn" value="Logout" onClick="location.href='./account/logout.jsp';">
+<input type="submit" class="headerbtn" value="Logout" onClick="location.href='./admin/logout.jsp';">
 </div>
 		</div>
 	</div>
 	 
 	<script>
+	var alias = document.location.href.split("/")[5];
+	if (alias == "login.jsp" || alias == "login_ok.jsp" ) {
+		document.getElementById("headerUserInfo").style.display = "none";
+	}
+	
 	if ("<%=member_id %>" == "null"){
 		document.getElementById("headerUserInfo").style.display = "none";
 		document.getElementById("header").onclick = function() {

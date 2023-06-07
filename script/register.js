@@ -1,35 +1,37 @@
-
-function falseCSS(name) {
-	var element = document.Registerform[name];
+function falseCSS_CSS(element){
 	element.classList.remove("normal");
 	element.classList.remove("done");
 	element.classList.add("false");
+}
+
+function doneCSS_CSS(element){
+	element.classList.remove("normal");
+	element.classList.remove("false");
+	element.classList.add("done");
+}
+
+function falseCSS(name) {
+	var element = document.Registerform[name];
+	falseCSS_CSS(element);
 }
 
 function doneCSS(name) {
 	var element = document.Registerform[name];
-	element.classList.remove("normal");
-	element.classList.remove("false");
-	element.classList.add("done");
+	doneCSS_CSS(element);
 }
-
 
 function falseCSSName(name, num) {
 	var element = document.getElementsByName(name)[num];
-	element.classList.remove("normal");
-	element.classList.remove("done");
-	element.classList.add("false");
+	falseCSS_CSS(element);
 }
 
 function doneCSSName(name, num) {
 	var element = document.getElementsByName(name)[num];
-	element.classList.remove("normal");
-	element.classList.remove("false");
-	element.classList.add("done");
+	doneCSS_CSS(element);
 }
 
 function checkID(uID) {
-	var regex = /^[a-z0-9]{5,8}$/;
+	var regex = /^[a-z0-9]{4,12}$/;
 
 	if (regex.test(uID)) {
 		doneCSS("userID");

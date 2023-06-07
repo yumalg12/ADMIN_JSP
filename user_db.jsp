@@ -12,6 +12,15 @@
 <meta charset="UTF-8">
 <title>Member List from DB</title>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<style>
+.infobtn{
+cursor: pointer;
+width: 16px;
+height: 16px;
+}
+</style>
+
 </head>
 <%@include file="./header.jsp" %>
 
@@ -47,13 +56,14 @@ $(document).ready(function() {
 			</div>
 			<div class="container"><h1>전체회원조회</h1>
 <div>
-	<form name="SearchQueryForm" method="post" style="display: inline;" accept-charset="UTF-8" action="./member_db.jsp">
+	<form name="SearchQueryForm" method="post" style="display: inline;" accept-charset="UTF-8" action="./user_db.jsp">
 		<label style="width: 80px;">검색 조건: </label>
 		<select class="normal" id="sqlSelect" name="sqlSelect" onChange=queryValInput()>
 			<option value="MEMBER_ID">ID</option>
 			<option value="MEMBER_GENDER">성별</option>
 			<option value="SMSSTS_YN">SMS 수신여부</option>
 			<option value="EMAILSTS_YN">이메일 수신여부</option>
+			<option value="DEL_YN">탈퇴 여부</option>
 		</select> 
 		<input type="text" class="normal" id="sqlInput" name="queryVal" placeholder="value" style="width: 200px;"> 
 		<select class="normal" id="sqlGender" name="queryVal" style="display: none; width: 200px;" disabled>
@@ -83,6 +93,8 @@ $(document).ready(function() {
 		<th>주소</th>
 		<th>생년월일</th>
 		<th>가입일</th>
+		<th>탈퇴 여부</th>
+		<th>수정/제거</th>
 	</tr>	
 
 		<%
@@ -108,7 +120,7 @@ $(document).ready(function() {
 			sqlSearch = "";
 		}
 
-		String sql = "SELECT MEMBER_ID, MEMBER_NAME, MEMBER_GENDER, TEL1, TEL2, TEL3, SMSSTS_YN, EMAIL1, EMAIL2, EMAILSTS_YN, ZIPCODE, ROADADDRESS, NAMUJIADDRESS, MEMBER_BIRTH_Y, MEMBER_BIRTH_M, MEMBER_BIRTH_D, JOINDATE FROM `t_shopping_member` "
+		String sql = "SELECT MEMBER_ID, MEMBER_NAME, MEMBER_GENDER, TEL1, TEL2, TEL3, SMSSTS_YN, EMAIL1, EMAIL2, EMAILSTS_YN, ZIPCODE, ROADADDRESS, NAMUJIADDRESS, MEMBER_BIRTH_Y, MEMBER_BIRTH_M, MEMBER_BIRTH_D, JOINDATE, DEL_YN FROM `t_shopping_member` "
 				+ sqlSearch
 				+"order by JOINDATE DESC;";
 
@@ -138,6 +150,7 @@ $(document).ready(function() {
 			Integer bMon = rs.getInt("MEMBER_BIRTH_M");
 			Integer bDay = rs.getInt("MEMBER_BIRTH_D");
 			String joinDate = rs.getString("JOINDATE").substring(0,10);
+			String delYN = rs.getString("DEL_YN");
 		%>
 
 		<tr>
@@ -152,12 +165,19 @@ $(document).ready(function() {
 			<td><%="(우)"+zipcode+" "+roadaddress+" "+namujiaddress%></td>
 			<td><%=bYear+"년 "+bMon+"월 "+bDay+"일"%></td>
 			<td><%=joinDate%></td>
+			<td><%=delYN%></td>			
+			<td><img class="infobtn modbtn" src="./repo/modify-icon.svg" onclick="adminmodify(this)">
+			<img class="infobtn delbtn" src="./repo/red-x-line-icon.svg" onclick="admindel(this);"></td>
 		</tr>
 <%
 	}
 %>
 
 </table>
+
+<form name="adminDelForm" action="./admin/user_admindel.jsp" method="post"><input type="hidden" name="delID"></input></form>
+<form name="adminUpdateForm" action="./userinfo_admin.jsp" method="post"><input type="hidden" name="updateID"></input></form>
+
 </div>
 </div>
 </div>
@@ -193,11 +213,50 @@ function queryValInput() {
 		hide("sqlInput");
 		hide("sqlGender");
 		show("sqlYN");
+	} else if (selectVal === "DEL_YN"){
+		hide("sqlInput");
+		hide("sqlGender");
+		show("sqlYN");
 	} else {
 		show("sqlInput");
 		hide("sqlGender");
 		hide("sqlYN");
 	}
+}
+
+function admindel(thisobj) {
+	  var obj = thisobj;
+	  var delID = obj.parentElement.parentElement.children[1].textContent;
+
+	  if (obj.parentElement.parentElement.children[11].textContent == "Y") {
+	    alert("이미 삭제된 계정입니다.");
+	  } else {
+	    var input = prompt("계정을 삭제하시려면 삭제할 계정의 ID를 입력하십시오."+" (" + delID + ")");
+	    if (input === null || input !== delID) {
+	      alert("계정 삭제가 취소되었습니다.");
+	    } else {
+	    	document.adminDelForm.delID.value = delID;
+	    	document.adminDelForm.submit();
+	    }
+	  }
+	}
+	
+function adminmodify(thisobj){
+	 var obj = thisobj;
+	 var updateID = obj.parentElement.parentElement.children[1].textContent;
+
+	  if (obj.parentElement.parentElement.children[11].textContent == "Y") {
+		    alert("삭제한 계정 정보는 수정할 수 없습니다.");
+		  } else {
+			  
+			    var input = prompt("확인을 위해 정보를 수정할 계정의 ID를 입력하십시오."+" (" + updateID + ")");
+			    if (input === null || input !== updateID) {
+			      alert("사용자 정보 수정이 취소되었습니다.");
+			    } else {
+		    	document.adminUpdateForm.updateID.value = updateID;
+		    	document.adminUpdateForm.submit();	
+			    }
+		    	}
 }
 </script>
 

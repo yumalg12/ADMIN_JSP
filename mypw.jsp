@@ -59,7 +59,7 @@ request.setCharacterEncoding("UTF-8");
 		%>
 
 <!-- 결과 표시 -->
-<form name="Registerform" action=./account/userpw_update.jsp method="post" onSubmit="return changePW();">
+<form name="Registerform" action=./admin/userpw_update.jsp method="post" onSubmit="return changePW();">
 
 
     <div class="item">
