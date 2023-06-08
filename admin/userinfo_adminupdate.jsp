@@ -3,8 +3,6 @@
 // 인코딩
 request.setCharacterEncoding("UTF-8");
 %>
-<%@page import="java.sql.DriverManager"%>
-<%@page import="java.sql.Connection"%>
 <%@page import="java.sql.PreparedStatement"%>
 <%@page import="java.sql.ResultSet"%>
 
@@ -27,9 +25,6 @@ request.setCharacterEncoding("UTF-8");
     String bYear = request.getParameter("bYear");
     String bMon = request.getParameter("bMon");
     String bDay = request.getParameter("bDay");
-    //int bYear = Integer.parseInt(request.getParameter("bYear")); 
-    //int bMon = Integer.parseInt(request.getParameter("bMon")); 
-    //int bDay = Integer.parseInt(request.getParameter("bDay"));
     
     String num1=request.getParameter("num1");
     String num2=request.getParameter("num2");
@@ -56,16 +51,12 @@ request.setCharacterEncoding("UTF-8");
 	String jibunAddress=request.getParameter("jibunAddress");
 	String roadAddress=request.getParameter("roadAddress");
 	String namujiAddress=request.getParameter("namujiAddress");
+%>
 
+<%@ include file = "./conn.jsp"%>
+
+<%
 	// DB 유저 정보 업데이트
-	Connection conn = null;
-
-	String url = "jdbc:mysql://localhost:3306/register";
-	String id = "root"; //MySQL에 접속을 위한 계정의 ID
-	String pwd = "mysql"; //MySQL에 접속을 위한 계정의 암호
-	Class.forName("com.mysql.jdbc.Driver");
-	conn = DriverManager.getConnection(url, id, pwd);
-	
 	PreparedStatement pstmt = null;
 	
 	

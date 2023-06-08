@@ -3,8 +3,6 @@
 // 인코딩
 request.setCharacterEncoding("UTF-8");
 %>
-<%@page import="java.sql.DriverManager"%>
-<%@page import="java.sql.Connection"%>
 <%@page import="java.sql.PreparedStatement"%>
 <%@page import="java.sql.ResultSet"%>
 
@@ -108,16 +106,10 @@ request.setCharacterEncoding("UTF-8");
 	if (emailYNval != null && emailYNval.equals("on")) {
 	    emailYN = "Y";
 	}
-
+%>
+<%@ include file = "./conn.jsp"%>
+<%
 	// 유저 정보를 DB에 추가
-	Connection conn = null;
-
-	String url = "jdbc:mysql://localhost:3306/register";
-	String id = "root"; //MySQL에 접속을 위한 계정의 ID
-	String pwd = "mysql"; //MySQL에 접속을 위한 계정의 암호
-	Class.forName("com.mysql.jdbc.Driver");
-	conn = DriverManager.getConnection(url, id, pwd);
-	
 	PreparedStatement pstmt = null;
 
 	String sql = "insert into t_shopping_member"+

@@ -16,21 +16,13 @@ request.setCharacterEncoding("UTF-8");
 
 </head>
 <body>
+<%@ include file = "./conn.jsp"%>
 
     <%
 	String member_id = (String) session.getAttribute("member_id");
 
 	// DB 유저 정보 확인 및 제거
-	Connection conn = null;
-
-	String url = "jdbc:mysql://localhost:3306/register";
-	String id = "root"; //MySQL에 접속을 위한 계정의 ID
-	String pwd = "mysql"; //MySQL에 접속을 위한 계정의 암호
-	Class.forName("com.mysql.jdbc.Driver");
-	conn = DriverManager.getConnection(url, id, pwd);
-	
 	PreparedStatement pstmt = null;
-	
 	
 	String sql = "delete from t_shopping_member "+
 			"where MEMBER_ID = '"+member_id+"';";
