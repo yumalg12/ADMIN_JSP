@@ -32,7 +32,7 @@
 </style>
 <body style="margin: 0px;">
 <div id="header">
-		<div class="headerContainer" style="display: grid; grid-template-columns: 1fr 1fr">
+		<div class="headerContainer grid" style="grid-template-columns: 1fr 1fr">
 		<div class="headerItem" style="padding-top: 9px; margin-left: 30px;" onClick="location.href='./main.jsp'">
 		<span style="font-size: 16pt; font-weight: bold;">JSP Admin Page</span>
 		</div>

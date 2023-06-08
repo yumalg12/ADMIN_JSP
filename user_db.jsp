@@ -11,6 +11,7 @@
 <title>Member List from DB</title>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+<link rel="stylesheet" href="./css/toggle.css">
 <style>
 .infobtn{
 cursor: pointer;
@@ -46,14 +47,14 @@ $(document).ready(function() {
 </script>
 
 	<div class="contents">
-		<div class="grid"
-			style="display: grid; grid-template-columns: 200px 1fr;">
+		<div class="grid" style="grid-template-columns: 200px 1fr;">
 
 			<div class="container sidebar">
 				<%@include file="./sidebar.jsp"%>
 			</div>
 			<div class="container"><h1>전체회원조회</h1>
-<div>
+<div class="grid" style="grid-template-columns: 1fr 150px;">
+<div class="item">
 	<form name="SearchQueryForm" method="post" style="display: inline;" accept-charset="UTF-8" action="./user_db.jsp">
 		<label style="width: 80px;">검색 조건: </label>
 		<select class="normal" id="sqlSelect" name="sqlSelect" onChange=queryValInput()>
@@ -75,7 +76,13 @@ $(document).ready(function() {
 
 		<input type="submit" value="Submit">
     </form>
-        
+</div>
+<div class="item" style="text-align: right;">
+<div class="togglediv" style="    position: relative; top: 1rem; right: 3px;">
+  <span>상세검색</span>     
+  <input class="toggle" role="switch" type="checkbox">
+  </div>
+</div>
 </div>
 <br>
 <table>
@@ -107,7 +114,7 @@ $(document).ready(function() {
 		queryVal = request.getParameter("queryVal");
 		
 		if (sqlSelect != null && queryVal != null && queryVal != ""){
-			sqlSearch = "where " + sqlSelect + "='" + queryVal + "' ";
+			sqlSearch = "where " + sqlSelect + " LIKE '%" + queryVal + "%' ";
 		} else {
 			sqlSearch = "";
 		}

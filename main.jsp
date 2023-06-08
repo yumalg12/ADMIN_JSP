@@ -18,7 +18,7 @@
 <body>
 
 	<div class="contents">
-		<div class="grid" style="display: grid; grid-template-columns: 200px 1fr;">
+		<div class="grid" style="grid-template-columns: 200px 1fr;">
 
 			<div class="container sidebar">
 				<%@include file="./sidebar.jsp"%>
@@ -55,9 +55,7 @@
 			
 			g_labels = g_labels + DATE + "','" ;
 			g_data = g_data + COUNT + ",";
-			
 	}
-		
 %>
 
 <script>

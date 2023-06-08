@@ -18,6 +18,10 @@ body {
     min-height: 100vh;
 }
 
+.grid {
+	display: grid;
+}
+
 a {
 	color: navy;
 	text-decoration: none;

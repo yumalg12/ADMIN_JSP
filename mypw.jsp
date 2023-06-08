@@ -4,8 +4,6 @@
 // 인코딩
 request.setCharacterEncoding("UTF-8");
 %>    
-<%@page import="java.sql.DriverManager"%>
-<%@page import="java.sql.Connection"%>
 <%@page import="java.sql.PreparedStatement"%>
 <%@page import="java.sql.ResultSet"%>
 
@@ -21,8 +19,7 @@ request.setCharacterEncoding("UTF-8");
 
 <body>
 	<div class="contents">
-		<div class="grid"
-			style="display: grid; grid-template-columns: 200px 1fr;">
+		<div class="grid" style="grid-template-columns: 200px 1fr;">
 
 			<div class="container sidebar">
 				<%@include file="./sidebar.jsp"%>

@@ -3,8 +3,6 @@
 // 인코딩
 request.setCharacterEncoding("UTF-8");
 %>
-<%@page import="java.sql.DriverManager"%>
-<%@page import="java.sql.Connection"%>
 <%@page import="java.sql.PreparedStatement"%>
 <%@page import="java.sql.ResultSet"%>
 
