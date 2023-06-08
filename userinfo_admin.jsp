@@ -104,9 +104,9 @@ request.setCharacterEncoding("UTF-8");
 
     <div class="item">
     <label>생년월일</label>
-    <input type="text" value="<%=bYear %>" class="normal" style="width: 50px;" maxlength="4"><span>년 </span>
-    <input type="text" value="<%=bMon %>" class="normal" style="width: 50px;" maxlength="2"><span>월 </span>
-    <input type="text" value="<%=bDay %>" class="normal" style="width: 50px;" maxlength="2"><span>일 </span>
+    <input type="text" value="<%=bYear %>" name="bYear" class="normal" style="width: 50px;" maxlength="4"><span>년 </span>
+    <input type="text" value="<%=bMon %>" name="bMon" class="normal" style="width: 50px;" maxlength="2"><span>월 </span>
+    <input type="text" value="<%=bDay %>" name="bDay" class="normal" style="width: 50px;" maxlength="2"><span>일 </span>
 </div>
 
     <div class="item">

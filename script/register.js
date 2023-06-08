@@ -33,7 +33,7 @@ function doneCSSName(name, num) {
 function checkID(uID) {
 	var regex = /^[a-z0-9]{4,12}$/;
 
-	if (regex.test(uID)) {
+	if (regex.test(uID) && uID != "null" && uID != "undefined") {
 		doneCSS("userID");
 		document.getElementById("IDNotice").style.display = "none";
 		document.getElementById("checkIDdup").style.display = "";
@@ -79,9 +79,10 @@ function checkPWtwo() {
 
 
 function checkName() {
-	var len = (document.getElementsByName("userName")[0].value).length;
+	var regex = /^[가-힣]{2,5}$/;
+	var name = document.Registerform.userName.value;
 	
-	if(len >= 2){
+	if(regex.test(name)){
 		doneCSS("userName");
 		document.getElementById("nameNotice").style.display = "none";
 		return true;
@@ -194,7 +195,8 @@ function checkMail1() {
 function checkMail2() {
 	var regex = /^[a-zA-Z0-9]+[\.][a-z]+$/;
 	
-	if(regex.test(document.getElementsByName("email2")[0].value || regex.test(document.getElementsByName("email2")[1].value))){
+	if(regex.test(document.getElementsByName("email2")[0].value)
+	 || regex.test(document.getElementsByName("email2")[1].value)){
 		doneCSSName("email2", 1);
 		return true;
 	} else {
@@ -246,6 +248,13 @@ if (!checkID(document.Registerform.userID.value)) {
   alert("비밀번호를 확인하십시오.");
   setTimeout(function () {
     document.Registerform.PWcheck.focus();
+  }, 100);
+  return false;
+} else if (document.Registerform.PW.value == document.Registerform.userID.value) {
+  alert("ID와 동일한 비밀번호는 사용할 수 없습니다.");
+  falseCSS("PW");
+  setTimeout(function () {
+    document.Registerform.PW.focus();
   }, 100);
   return false;
 } else if (!checkName()) {

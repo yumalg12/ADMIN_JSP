@@ -22,12 +22,14 @@ request.setCharacterEncoding("UTF-8");
     
     String name=request.getParameter("userName");
     
-    String Gender=request.getParameter("gender");
+    String gender=request.getParameter("gender");
     
-    String birthDate=request.getParameter("birthDate");
-    int bYear = Integer.parseInt(birthDate.substring(0,4)); 
-    int bMon = Integer.parseInt(birthDate.substring(5,7)); 
-    int bDay = Integer.parseInt(birthDate.substring(8,10));
+    String bYear = request.getParameter("bYear");
+    String bMon = request.getParameter("bMon");
+    String bDay = request.getParameter("bDay");
+    //int bYear = Integer.parseInt(request.getParameter("bYear")); 
+    //int bMon = Integer.parseInt(request.getParameter("bMon")); 
+    //int bDay = Integer.parseInt(request.getParameter("bDay"));
     
     String num1=request.getParameter("num1");
     String num2=request.getParameter("num2");
@@ -69,6 +71,7 @@ request.setCharacterEncoding("UTF-8");
 	
 	String sql = "update t_shopping_member set"+
 			" MEMBER_NAME = '"+name+"', "+
+			" MEMBER_GENDER = '"+gender+"', "+
 			" MEMBER_BIRTH_Y = '"+bYear+"', "+
 			" MEMBER_BIRTH_M = '"+bMon+"', "+
 			" MEMBER_BIRTH_D = '"+bDay+"', "+	
@@ -84,7 +87,7 @@ request.setCharacterEncoding("UTF-8");
 			" JIBUNADDRESS = '"+jibunAddress+"', "+
 			" NAMUJIADDRESS = '"+namujiAddress+"' "+
 			"where MEMBER_ID = '"+updateID+"';";
-out.print(sql);
+
 	pstmt = conn.prepareStatement(sql);
 
 	// 실행 및 연결 종료
@@ -113,7 +116,7 @@ out.print(sql);
 </script>
 	<script>
 	alert("<%=updateID%> 계정의 정보 수정이 완료되었습니다.");
-	//setTimeout(function() { window.location.href="../user_db.jsp";}, 100);
+	setTimeout(function() { window.location.href="../user_db.jsp";}, 100);
 	</script>
 </body>
 </html>

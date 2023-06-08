@@ -12,10 +12,9 @@ request.setCharacterEncoding("UTF-8");
 <head>
 <meta charset="UTF-8">
 <title>Member Login</title>
-<link rel="stylesheet" href="./css/main.css">
 
 </head>
-<%@include file="../header.jsp" %>
+<%@include file="./header.jsp" %>
 
 <body>
 <div class="contents">

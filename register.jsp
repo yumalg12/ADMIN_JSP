@@ -14,37 +14,7 @@ request.setCharacterEncoding("UTF-8");
 <title>Member Register</title>
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <script src="./script/execDaumPostcode.js"></script>
-
-<script>
-function fn_overlapped() {
-    var _id = $("#userID").val();
-    
-    $.ajax({
-        type: "post",
-        async: false,
-        url: "./admin/overlapped.jsp",
-        dataType: "json",
-        data: {userID: _id},
-        success: function(data, textStatus) {
-            if (data.result == 'false') {
-                alert("사용할 수 있는 ID입니다.");
-                $('#checkIDdup').prop("disabled", true);
-                $('#userID').prop("disabled", true);
-                $('#userIDval').val(_id);
-            } else {
-                alert("사용할 수 없는 ID입니다.");
-                falseCSS("userID");
-            }
-        },
-        error: function(data, textStatus) {
-            alert("오류가 발생했습니다.");
-        },
-        complete: function(data, textStatus) {
-        }
-    });
-}
-
-</script>
+<script src="./script/fn_overlapped.js"></script>
 
 </head>
 <%@include file="./header.jsp" %>
@@ -121,7 +91,7 @@ function fn_overlapped() {
 <div class="item">
     <label>주소</label>
 
-	<span class="addressdiv" style="margin-left: 0px;">우편번호: </span><input class="normal" type="text" id="zipcode" name="zipcode" onInput= checkZipCode()> 
+	<span class="addressdiv" style="margin-left: 0px;">우편번호: </span><input class="normal" type="text" id="zipcode" name="zipcode" onInput= checkZipCode() maxlength="5"> 
 	<span class="btn" onClick="javascript:execDaumPostcode()">우편번호 검색</span>
 	<br>
 	<label></label><span class="addressdiv">지번 주소: </span><input class="normal" type="text" id="jibunAddress" name="jibunAddress" style="width: 300px;" onInput= checkAddress(this.name)>
