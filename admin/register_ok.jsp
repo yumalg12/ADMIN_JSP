@@ -36,6 +36,11 @@ request.setCharacterEncoding("UTF-8");
     <input type="text" name="userName" class="normal" placeholder="username" value="<%=name%>" disabled>
     
     <br>
+    <label>부서</label>
+    <%String dept=request.getParameter("dept");%>
+    <input type="text" name="dept" class="normal" placeholder="dept" value="<%=dept%>" disabled>
+    
+    <br>
     <label>성별</label>
     <%String Gender=request.getParameter("gender");%>
     <span>여자</span><input type="radio" name="gender" value="female" <%if (Gender.equals("female")) out.print("checked");%> disabled>
@@ -113,13 +118,13 @@ request.setCharacterEncoding("UTF-8");
 	PreparedStatement pstmt = null;
 
 	String sql = "insert into t_shopping_member"+
-			"(MEMBER_ID, MEMBER_PW, MEMBER_NAME, MEMBER_GENDER, "
+			"(MEMBER_ID, MEMBER_PW, MEMBER_NAME, DEPTNO, MEMBER_GENDER, "
 			+"TEL1, TEL2, TEL3, SMSSTS_YN, "
 			+"EMAIL1, EMAIL2, EMAILSTS_YN, "
 			+"ZIPCODE, ROADADDRESS, JIBUNADDRESS, NAMUJIADDRESS, "
 			+"MEMBER_BIRTH_Y, MEMBER_BIRTH_M, MEMBER_BIRTH_D) "+
 			"values('"
-			+userID+"','"+PW+"','"+name+"','"+Gender+"','"
+			+userID+"','"+PW+"','"+name+"','"+dept+"','"+Gender+"','"
 			+num1+"','"+num2+"','"+num3+"','"+SMSYN+"','"
 			+email1+"','"+email2+"','"+emailYN+"','"
 			+zipcode+"','"+roadAddress+"','"+jibunAddress+"','"+namujiAddress+"','"

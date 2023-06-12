@@ -1,3 +1,4 @@
+<link href="./css/bootstrap.css" rel="stylesheet">
 <link rel="stylesheet" href="./css/main.css">
 
 <style>
@@ -50,7 +51,7 @@ String member_id = (String) session.getAttribute("member_id");
     position: relative;
     top: 1px;
 ">User: <%=member_id %> </span>
-<input type="submit" class="headerbtn" value="Logout" onClick="location.href='./admin/logout.jsp';">
+<input class="headerbtn btn" type="submit" value="Logout" onClick="location.href='./admin/logout.jsp';">
 </div>
 		</div>
 	</div>

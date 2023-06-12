@@ -19,7 +19,9 @@ request.setCharacterEncoding("UTF-8");
 	String updateID = request.getParameter("updateID");
     
     String name=request.getParameter("userName");
-    
+
+    String dept=request.getParameter("dept");
+
     String gender=request.getParameter("gender");
     
     String bYear = request.getParameter("bYear");
@@ -62,6 +64,7 @@ request.setCharacterEncoding("UTF-8");
 	
 	String sql = "update t_shopping_member set"+
 			" MEMBER_NAME = '"+name+"', "+
+			" DEPTNO = '"+dept+"', "+
 			" MEMBER_GENDER = '"+gender+"', "+
 			" MEMBER_BIRTH_Y = '"+bYear+"', "+
 			" MEMBER_BIRTH_M = '"+bMon+"', "+

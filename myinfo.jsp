@@ -36,7 +36,13 @@ request.setCharacterEncoding("UTF-8");
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 
-		String sql = "SELECT * FROM `t_shopping_member` where MEMBER_ID = '"+member_id+"';";
+		String sql = "SELECT MEMBER_ID, MEMBER_PW, MEMBER_NAME, t_dept.DNAME, MEMBER_GENDER, "
+				+"TEL1, TEL2, TEL3, SMSSTS_YN, EMAIL1, EMAIL2, EMAILSTS_YN, ZIPCODE, ROADADDRESS, JIBUNADDRESS, NAMUJIADDRESS, "
+				+"MEMBER_BIRTH_Y, MEMBER_BIRTH_M, MEMBER_BIRTH_D, JOINDATE "
+				+"FROM t_shopping_member "
+				+"JOIN t_dept "
+				+"ON t_shopping_member.DEPTNO = t_dept.DEPTNO "
+				+"WHERE t_shopping_member.MEMBER_ID = '"+member_id+"';";
 
 		pstmt = conn.prepareStatement(sql);
 
@@ -49,6 +55,7 @@ request.setCharacterEncoding("UTF-8");
 			String userID = rs.getString("MEMBER_ID");
 			PW = rs.getString("MEMBER_PW");
 			String userName = rs.getString("MEMBER_NAME");
+			String dept = rs.getString("t_dept.DNAME");
 			String gender = rs.getString("MEMBER_GENDER");
 			String num1 = rs.getString("TEL1");
 			String num2 = rs.getString("TEL2");
@@ -71,18 +78,23 @@ request.setCharacterEncoding("UTF-8");
 
     <div class="item">
     <label>아이디</label>
-    <input type="text" name="userID" class="normal" placeholder="userID" value="<%=userID%>" maxlength="8" disabled>
+    <input type="text" name="userID" class="form-control" placeholder="userID" value="<%=userID%>" maxlength="8" disabled>
 </div>
 
     <div class="item">
     <label>비밀번호</label>
-    <input type="password" name="PW" class="normal" placeholder="Enter password" value="1q2w3e4r5t6y7u8i9o0p" onInput="checkPWone()" disabled maxlength="20">
+    <input type="password" name="PW" class="form-control" placeholder="Enter password" value="1q2w3e4r5t6y7u8i9o0p" onInput="checkPWone()" disabled maxlength="20">
     <span class="notice" id="PWNotice" style="display: none;"> ※영문 소문자, 숫자, 특수문자로 이루어진 4~20자</span>
     </div>
 
     <div class="item">
         <label>이름</label>
-    <input type="text" name="userName" class="normal" placeholder="username" value="<%=userName%>" maxlength="5" disabled>
+    <input type="text" name="userName" class="form-control" placeholder="username" value="<%=userName%>" maxlength="5" disabled>
+</div>
+
+    <div class="item">
+        <label>부서</label>
+    <input type="text" name="dept" class="form-control" placeholder="dept" value="<%=dept%>" disabled>
 </div>
 
     <div class="item">
@@ -93,18 +105,18 @@ request.setCharacterEncoding("UTF-8");
 
     <div class="item">
     <label>생년월일</label>
-    <input type="text" value="<%=bYear %>" class="normal" style="width: 50px;" maxlength="4" disabled><span>년 </span>
-    <input type="text" value="<%=bMon %>" class="normal" style="width: 50px;" maxlength="2" disabled><span>월 </span>
-    <input type="text" value="<%=bDay %>" class="normal" style="width: 50px;" maxlength="2" disabled><span>일 </span>
+    <input type="text" value="<%=bYear %>" class="form-control" style="width: 80px;" maxlength="4" disabled><span>년 </span>
+    <input type="text" value="<%=bMon %>" class="form-control" style="width: 80px;" maxlength="2" disabled><span>월 </span>
+    <input type="text" value="<%=bDay %>" class="form-control" style="width: 80px;" maxlength="2" disabled><span>일 </span>
 </div>
 
     <div class="item">
     <label>전화번호</label>
-    <input type="text" class="normal" style="width: 50px;" name="num1" value="<%=num1%>" onInput="checkPhone(this.name)" disabled maxlength="3"> 
+    <input type="text" class="form-control" style="width: 80px;" name="num1" value="<%=num1%>" onInput="checkPhone(this.name)" disabled maxlength="3"> 
 	<span>-</span> 
-	<input type="text" class="normal" style="width: 50px;" name="num2" value="<%=num2%>" onInput="checkPhone(this.name)" disabled maxlength="4"> 
+	<input type="text" class="form-control" style="width: 80px;" name="num2" value="<%=num2%>" onInput="checkPhone(this.name)" disabled maxlength="4"> 
 	<span>-</span> 
-	<input type="text" class="normal" style="width: 50px;" name="num3" value="<%=num3%>" onInput="checkPhone(this.name)" disabled maxlength="4"> 
+	<input type="text" class="form-control" style="width: 80px;" name="num3" value="<%=num3%>" onInput="checkPhone(this.name)" disabled maxlength="4"> 
 	<br>
 	<label></label>
 	<input type="checkbox" id="SMSYN" name="SMSYN" <%if (SMSYN.equals("Y")) out.print("checked");%> disabled><span>SMS 수신 동의</span>
@@ -112,9 +124,9 @@ request.setCharacterEncoding("UTF-8");
 
     <div class="item">
     <label>이메일</label>
-    <input type="text" name="email1" class="normal" value="<%=email1%>" onInput="checkMail1()" disabled>
+    <input type="text" name="email1" class="form-control" value="<%=email1%>" onInput="checkMail1()" disabled>
     <span>@</span>
-    <input type="text" name="email2" class="normal" value="<%=email2%>" onInput="checkMail2_2()" disabled>
+    <input type="text" name="email2" class="form-control" value="<%=email2%>" onInput="checkMail2_2()" disabled>
 	<br>
 	<label></label>
     <input type="checkbox" id="emailYN" name="emailYN" <%if (emailYN.equals("Y")) out.print("checked");%> disabled><span>이메일 수신 동의</span>
@@ -122,24 +134,24 @@ request.setCharacterEncoding("UTF-8");
 
     <div class="item">
     <label>주소</label>
-	<span class="addressdiv" style="margin-left: 0px;">우편번호: </span><input value="<%=zipcode%>" class="normal" type="text" id="zipcode" name="zipcode" onInput=checkZipCode() disabled> 
+	<span class="addressdiv" style="margin-left: 0px;">우편번호: </span><input value="<%=zipcode%>" class="form-control" type="text" id="zipcode" name="zipcode" onInput=checkZipCode() disabled> 
 	<span class="btn" onClick="javascript:execDaumPostcode()" id="adrsSearchBtn" style="display: none;">우편번호 검색</span>
 	<br>
-	<label></label><span class="addressdiv">지번 주소: </span><input value="<%=jibunAddress%>" class="normal" type="text" id="jibunAddress" name="jibunAddress" style="width: 300px;" onInput=checkAddress(this.name) disabled>
+	<label></label><span class="addressdiv">지번 주소: </span><input value="<%=jibunAddress%>" class="form-control" type="text" id="jibunAddress" name="jibunAddress" style="width: 300px;" onInput=checkAddress(this.name) disabled>
 	<br>
-	<label></label><span class="addressdiv">도로명 주소: </span><input value="<%=roadAddress%>" class="normal" type="text" id="roadAddress" name="roadAddress" style="width: 300px;" onInput=checkAddress(this.name) disabled>
+	<label></label><span class="addressdiv">도로명 주소: </span><input value="<%=roadAddress%>" class="form-control" type="text" id="roadAddress" name="roadAddress" style="width: 300px;" onInput=checkAddress(this.name) disabled>
 	<br>
-	<label></label><span class="addressdiv">나머지 주소: </span><input value="<%=namujiAddress%>" class="normal" type="text" name="namujiAddress" style="width: 300px;" disabled>
+	<label></label><span class="addressdiv">나머지 주소: </span><input value="<%=namujiAddress%>" class="form-control" type="text" name="namujiAddress" style="width: 300px;" disabled>
 </div>
 
 <%} %>
 <div id="infobtns" style="display: none;">
-<input type="submit" value="Save" id="save" name="save">
-<span class="btn" style="padding: 7px 10px; position: relative; top: 0.2px;" onClick="history.go(0)">Cancel</span>
+<input class="btn btn-primary" type="submit" value="Save" id="save" name="save">
+<span class="btn btn-secondary" style="padding: 7px 10px; position: relative; top: 0.2px;" onClick="history.go(0)">Cancel</span>
 </div>
 </form>
 <div id="deletebtn" style="display: none;">
-<button onClick="if(checkPW()) { confirmDelete(); }" style="background: red; border: none;">Delete Account</button>
+<button class="btn btn-danger" onClick="if(checkPW()) { confirmDelete(); }" style="background: red; border: none;">Delete Account</button>
 
 <script>
 function confirmDelete() {
@@ -153,7 +165,7 @@ function confirmDelete() {
 </script>
 </div>
 <div id="modifybtn">
-<button onClick="modifyInfo()">Modify</button>
+<button class="btn btn-primary" onClick="modifyInfo()">Modify</button>
 			</div>
 		</div>
 	</div>

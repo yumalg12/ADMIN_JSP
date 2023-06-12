@@ -55,24 +55,24 @@ request.setCharacterEncoding("UTF-8");
 
     <div class="item">
     <label>아이디</label>
-    <input type="text" name="userID" class="normal" placeholder="userID" value="<%=userID%>" maxlength="8" disabled> 
+    <input type="text" name="userID" class="form-control" placeholder="userID" value="<%=userID%>" maxlength="8" disabled> 
 </div>
 
     <div class="item">
     <label>기존 비밀번호</label>
-    <input type="password" name="PWold" class="normal" placeholder="Enter password" value="" maxlength="20">
+    <input type="password" name="PWold" class="form-control" placeholder="Enter password" value="" maxlength="20">
     </div>
     
     <div class="item">
     <label>신규 비밀번호</label>
-    <input type="password" name="PW" class="normal" placeholder="Enter password" value="" onInput="checkPWone(); checkPWtwo()" maxlength="20">
-    <input type="password" class="normal" name="PWcheck" style="display: none;" placeholder="password check" oninput="checkPWtwo()" maxlength="20">
+    <input type="password" name="PW" class="form-control" placeholder="Enter password" value="" onInput="checkPWone(); checkPWtwo()" maxlength="20">
+    <input type="password" class="form-control" name="PWcheck" style="display: none;" placeholder="password check" oninput="checkPWtwo()" maxlength="20">
     <span class="notice" id="PWNotice" style="display: none;"> ※영문 소문자, 숫자, 특수문자로 이루어진 4~20자</span>
     </div>
 
 <%} %>
 
-<input type="submit" value="Save" id="save" name="save">
+<input class="btn btn-primary" type="submit" value="Save" id="save" name="save">
 </form>
 		</div>
 </div>

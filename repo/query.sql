@@ -6,6 +6,7 @@ CREATE TABLE T_SHOPPING_MEMBER
 ( MEMBER_ID VARCHAR(20) PRIMARY KEY,
 MEMBER_PW VARCHAR(30),
 MEMBER_NAME VARCHAR(50),
+DEPTNO INT,
 MEMBER_GENDER VARCHAR(10),
 TEL1 VARCHAR(20),
 TEL2 VARCHAR(20),
@@ -24,3 +25,16 @@ MEMBER_BIRTH_D VARCHAR(20),
 JOINDATE DATETIME DEFAULT CURRENT_TIMESTAMP,
 DEL_YN VARCHAR(20) DEFAULT 'N'
 );
+
+drop table if exists t_dept;
+
+CREATE TABLE t_dept (
+  `DEPTNO` INT NOT NULL AUTO_INCREMENT,
+  `DNAME` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`DEPTNO`));
+
+insert into t_dept(DEPTNO, DNAME) values (10, '운영/회계');
+insert into t_dept(DEPTNO, DNAME) values (20, '마케팅');
+insert into t_dept(DEPTNO, DNAME) values (30, '기술연구소');
+insert into t_dept(DEPTNO, DNAME) values (40, '개발');
+insert into t_dept(DEPTNO, DNAME) values (50, '고객지원');

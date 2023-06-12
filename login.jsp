@@ -22,21 +22,16 @@ request.setCharacterEncoding("UTF-8");
 <h1>로그인</h1>
 <form name="Loginform" action="./admin/login_ok.jsp" method="post" style="display: inline;" onSubmit="return isEmpty();">
     <label>아이디</label>
-    <input type="text" class="normal" id="userID" name="userID" placeholder="user ID" maxlength="12"> 
+    <input type="text" class="form-control" id="userID" name="userID" placeholder="user ID" maxlength="12"> 
     
     <br>
     <label>비밀번호</label>
-    <input type="password" class="normal" name="PW" placeholder="password" maxlength="20">
+    <input type="password" class="form-control" name="PW" placeholder="password" maxlength="20">
  
     <br>    
-    <input type="submit" value="Login" style="background: white; color: #0075ff;
-">
+    <input type="submit" value="Login" class="btn btn-outline-primary">
 </form>
-    <input type="submit" value="Register" onClick=(location.href='./register.jsp')>
-    
-    
-<script src="http://code.jquery.com/jquery-latest.js"></script> 
-</div>
+    <input type="submit" value="Register" class="btn btn-primary" onClick=(location.href='./register.jsp')>
 
 <script>
 function isEmpty(){

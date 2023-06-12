@@ -9,7 +9,8 @@
 	<br>
 	<label>회원관리</label>
 	<div class="item">
-		<a href="./user_db.jsp">전체회원조회</a>
+		<a href="./user_db.jsp">전체회원조회</a><br>
+		<a href="./dept.jsp">부서 관리</a>
 	</div>
 	<br>
 	<label>게시글 관리</label>

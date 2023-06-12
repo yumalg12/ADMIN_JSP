@@ -12,13 +12,6 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <link rel="stylesheet" href="./css/toggle.css">
-<style>
-.infobtn{
-cursor: pointer;
-width: 16px;
-height: 16px;
-}
-</style>
 
 </head>
 <%@include file="./header.jsp" %>
@@ -43,7 +36,31 @@ $(document).ready(function() {
         document.SearchQueryForm.sqlSelect.value = "MEMBER_ID";
         document.getElementById("sqlInput").value = "";
     }
+   
+    $("#DetailSearchQueryForm").hide();
+    $("#DetailSearchQueryForm").attr("disabled", true);
+
 });
+
+function createDIV(){
+	obj = document.getElementById("detailSearch");
+
+	newDiv = document.createElement("div");
+	let i = 0;
+
+	newDiv.innerHTML = "<br><select class=\"form-control\" style=\"margin-left: 55px; width: 70px; margin-right: 6px;\"><option value=\"OR\">OR</option><option value=\"AND\">AND</option></select><select class=\"form-control\" id=\"sqlSelect\" name=\"sqlSelect\" onChange=queryValInput()><option value=\"MEMBER_ID\">ID</option><option value=\"MEMBER_GENDER\">성별</option><option value=\"SMSSTS_YN\">SMS 수신여부</option><option value=\"EMAILSTS_YN\">이메일 수신여부</option><option value=\"DEL_YN\">탈퇴 여부</option></select> <input type=\"text\" class=\"form-control\" id=\"sqlInput\" name=\"queryVal\" placeholder=\"value\" style=\"width: 200px;\"> <select class=\"form-control\" id=\"sqlGender\" name=\"queryVal\" style=\"display: none; width: 200px;\" disabled><option value=\"female\">여자</option><option value=\"male\">남자</option></select> <select class=\"form-control\" id=\"sqlYN\" name=\"queryVal\" style=\"display: none; width: 200px;\" disabled><option value=\"Y\">Y</option><option value=\"N\">N</option></select><img class=\"imgbtn\" src=\"./repo/mathematics-sign-minus-round-icon.svg\" style=\"width: 16px; position: relative; top: 3px;\" onclick=\"javascript:deleteDIV(this)\">";
+	newDiv.setAttribute("class", ("detailSearchCount")); // 새롭게 만들어지는 div 태그에 id 값 저장
+	newDiv.setAttribute("id", ("detailSearchObj" + i)); // 새롭게 만들어지는 div 태그에 id 값 저장
+
+	obj.appendChild(newDiv);
+}
+
+function deleteDIV(obj){
+	pp = obj.parentElement.parentElement; //detailSearch div
+	p = obj.parentElement; //detailSearchObj div
+	pp.removeChild(p); // detailSearchObj div 제거
+}
+
 </script>
 
 	<div class="contents">
@@ -55,32 +72,61 @@ $(document).ready(function() {
 			<div class="container"><h1>전체회원조회</h1>
 <div class="grid" style="grid-template-columns: 1fr 150px;">
 <div class="item">
-	<form name="SearchQueryForm" method="post" style="display: inline;" accept-charset="UTF-8" action="./user_db.jsp">
+	<form name="SearchQueryForm" id="SearchQueryForm" method="post" accept-charset="UTF-8" action="./user_db.jsp">
+	
+	<div id="simpleSearch" style="display: inline;">
 		<label style="width: 80px;">검색 조건: </label>
-		<select class="normal" id="sqlSelect" name="sqlSelect" onChange=queryValInput()>
+		<select class="form-select" id="sqlSelect" name="sqlSelect" onChange=queryValInput()>
 			<option value="MEMBER_ID">ID</option>
 			<option value="MEMBER_GENDER">성별</option>
 			<option value="SMSSTS_YN">SMS 수신여부</option>
 			<option value="EMAILSTS_YN">이메일 수신여부</option>
 			<option value="DEL_YN">탈퇴 여부</option>
 		</select> 
-		<input type="text" class="normal" id="sqlInput" name="queryVal" placeholder="value" style="width: 200px;"> 
-		<select class="normal" id="sqlGender" name="queryVal" style="display: none; width: 200px;" disabled>
+		<input type="text" class="form-control" id="sqlInput" name="queryVal" placeholder="value" style="width: 200px;"> 
+		<select class="form-control" id="sqlGender" name="queryVal" style="display: none; width: 200px;" disabled>
 			<option value="female">여자</option>
 			<option value="male">남자</option>
 		</select> 
-		<select class="normal" id="sqlYN" name="queryVal" style="display: none; width: 200px;" disabled>
+		<select class="form-select" id="sqlYN" name="queryVal" style="display: none; width: 200px;" disabled>
 			<option value="Y">Y</option>
 			<option value="N">N</option>
 		</select> 
+	</div>
+			<input class="btn btn-primary" type="submit" value="Submit">
+	</form>
+	
+	<form name="DetailSearchQueryForm" id="DetailSearchQueryForm" method="post" accept-charset="UTF-8" action="./user_db.jsp">
+	<div id="detailSearch" style="display: inline;">
+			<label style="width: 80px;">검색 조건</label>
+			<img class="imgbtn" src="./repo/addition-color-icon.svg" style="width: 20px; position: relative; top: 4px;" onclick="javascript:createDIV()">
+		<div class="detailSearchCount" id="detailSearchObj0" style="margin-left: 20px;">
+			<select class="form-select" id="sqlSelect" name="sqlSelect" onChange=queryValInput()>
+			<option value="MEMBER_ID">ID</option>
+			<option value="MEMBER_GENDER">성별</option>
+			<option value="SMSSTS_YN">SMS 수신여부</option>
+			<option value="EMAILSTS_YN">이메일 수신여부</option>
+			<option value="DEL_YN">탈퇴 여부</option>
+		</select> 
+		<input type="text" class="form-control" id="sqlInput" name="queryVal" placeholder="value" style="width: 200px;"> 
+		<select class="form-select" id="sqlGender" name="queryVal" style="display: none; width: 200px;" disabled>
+			<option value="female">여자</option>
+			<option value="male">남자</option>
+		</select> 
+		<select class="form-select" id="sqlYN" name="queryVal" style="display: none; width: 200px;" disabled>
+			<option value="Y">Y</option>
+			<option value="N">N</option>
+		</select> 
+		</div>
+	</div>
 
-		<input type="submit" value="Submit">
+		<input class="btn btn-primary" type="submit" value="Submit">
     </form>
 </div>
 <div class="item" style="text-align: right;">
-<div class="togglediv" style="    position: relative; top: 1rem; right: 3px;">
+<div class="togglediv" style="position: relative; top: 1rem; right: 3px;">
   <span>상세검색</span>     
-  <input class="toggle" role="switch" type="checkbox">
+  <input class="toggle" id="detailToggle" role="switch" type="checkbox" onclick="detailToggle()">
   </div>
 </div>
 </div>
@@ -90,6 +136,7 @@ $(document).ready(function() {
 		<th>Idx</th>
 		<th>아이디</th>
 		<th>이름</th>
+		<th>부서</th>
 		<th>성별</th>
 		<th>연락처</th>
 		<th>SMS 수신</th>
@@ -98,7 +145,7 @@ $(document).ready(function() {
 		<th>주소</th>
 		<th>생년월일</th>
 		<th>가입일</th>
-		<th>탈퇴 여부</th>
+		<th>탈퇴</th>
 		<th>수정/제거</th>
 	</tr>	
 	
@@ -114,14 +161,19 @@ $(document).ready(function() {
 		queryVal = request.getParameter("queryVal");
 		
 		if (sqlSelect != null && queryVal != null && queryVal != ""){
-			sqlSearch = "where " + sqlSelect + " LIKE '%" + queryVal + "%' ";
+			sqlSearch = "where t_shopping_member." + sqlSelect + " LIKE '%" + queryVal + "%' ";
 		} else {
 			sqlSearch = "";
 		}
 
-		String sql = "SELECT MEMBER_ID, MEMBER_NAME, MEMBER_GENDER, TEL1, TEL2, TEL3, SMSSTS_YN, EMAIL1, EMAIL2, EMAILSTS_YN, ZIPCODE, ROADADDRESS, NAMUJIADDRESS, MEMBER_BIRTH_Y, MEMBER_BIRTH_M, MEMBER_BIRTH_D, JOINDATE, DEL_YN FROM `t_shopping_member` "
+		String sql = "SELECT MEMBER_ID, MEMBER_NAME, t_dept.dname, MEMBER_GENDER, TEL1, TEL2, TEL3, SMSSTS_YN, EMAIL1, EMAIL2, EMAILSTS_YN, ZIPCODE, ROADADDRESS, NAMUJIADDRESS, MEMBER_BIRTH_Y, MEMBER_BIRTH_M, MEMBER_BIRTH_D, JOINDATE, DEL_YN "
+				+ "from `t_shopping_member` join `t_dept` on `t_shopping_member`.DEPTNO = `t_dept`.DEPTNO "
 				+ sqlSearch
 				+"order by JOINDATE DESC;";
+				
+
+				
+		out.print(sql);
 
 		pstmt = conn.prepareStatement(sql);
 
@@ -134,6 +186,7 @@ $(document).ready(function() {
 			Integer idx = i++;
 			String userID = rs.getString("MEMBER_ID");
 			String userName = rs.getString("MEMBER_NAME");
+			String dept = rs.getString("t_dept.dname");
 			String gender = rs.getString("MEMBER_GENDER");
 			String tel1 = rs.getString("TEL1");
 			String tel2 = rs.getString("TEL2");
@@ -156,17 +209,18 @@ $(document).ready(function() {
 			<td><%=idx%></td>
 			<td><%=userID%></td>
 			<td><%=userName%></td>
+			<td><%=dept%></td>
 			<td><%=gender%></td>
 			<td><%=tel1+"-"+tel2+"-"+tel3%></td>
 			<td><%=SMSYN%></td>
 			<td><%=email1+"@"+email2%></td>
 			<td><%=emailYN%></td>
-			<td><%="(우)"+zipcode+" "+roadaddress+" "+namujiaddress%></td>
+			<td class="text-truncate"><%="(우)"+zipcode+" "+roadaddress+" "+namujiaddress%></td>
 			<td><%=bYear+"년 "+bMon+"월 "+bDay+"일"%></td>
 			<td><%=joinDate%></td>
 			<td><%=delYN%></td>			
-			<td><img class="infobtn modbtn" src="./repo/modify-icon.svg" onclick="adminmodify(this)">
-			<img class="infobtn delbtn" src="./repo/red-x-line-icon.svg" onclick="admindel(this);"></td>
+			<td><img class="imgbtn infobtn modbtn" src="./repo/modify-icon.svg" onclick="adminmodify(this)">
+			<img class="imgbtn infobtn delbtn" src="./repo/red-x-line-icon.svg" onclick="admindel(this);"></td>
 		</tr>
 <%
 	}
@@ -183,13 +237,13 @@ $(document).ready(function() {
 
 <script>
 
-function show(id){
+function objshow(id){
 	var object = document.getElementById(id);
 	object.disabled = false;
 	object.style.display = "";
 }
 
-function hide(id){
+function objhide(id){
 	var object = document.getElementById(id);
 	object.disabled = true;
 	object.style.display = "none";
@@ -201,25 +255,25 @@ function queryValInput() {
 		document.SearchQueryForm.queryVal[i].value = "";
 	}
 	if (selectVal === "MEMBER_GENDER"){
-		hide("sqlInput");
-		show("sqlGender");
-		hide("sqlYN");
+		objhide("sqlInput");
+		objshow("sqlGender");
+		objhide("sqlYN");
 	} else if (selectVal === "SMSSTS_YN"){
-		hide("sqlInput");
-		hide("sqlGender");
-		show("sqlYN");
+		objhide("sqlInput");
+		objhide("sqlGender");
+		objshow("sqlYN");
 	} else if (selectVal === "EMAILSTS_YN"){
-		hide("sqlInput");
-		hide("sqlGender");
-		show("sqlYN");
+		objhide("sqlInput");
+		objhide("sqlGender");
+		objshow("sqlYN");
 	} else if (selectVal === "DEL_YN"){
-		hide("sqlInput");
-		hide("sqlGender");
-		show("sqlYN");
+		objhide("sqlInput");
+		objhide("sqlGender");
+		objshow("sqlYN");
 	} else {
-		show("sqlInput");
-		hide("sqlGender");
-		hide("sqlYN");
+		objshow("sqlInput");
+		objhide("sqlGender");
+		objhide("sqlYN");
 	}
 }
 
@@ -255,8 +309,23 @@ function adminmodify(thisobj){
 		    	document.adminUpdateForm.updateID.value = updateID;
 		    	document.adminUpdateForm.submit();	
 			    }
-		    	}
+		  }
 }
+
+function detailToggle() {
+    if ($("#detailToggle").prop('checked')) {
+        $("#DetailSearchQueryForm").show();
+        $("#DetailSearchQueryForm").attr("disabled", false);
+        $("#SearchQueryForm").hide();
+        $("#SearchQueryForm").attr("disabled", true);
+	} else {
+    	$("#DetailSearchQueryForm").hide();
+ 	   $("#DetailSearchQueryForm").attr("disabled", true);
+ 	   $("#SearchQueryForm").show();
+ 	   $("#SearchQueryForm").attr("disabled", false);
+	}
+}
+
 </script>
 
 </body>
