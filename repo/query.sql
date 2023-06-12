@@ -38,3 +38,9 @@ insert into t_dept(DEPTNO, DNAME) values (20, '마케팅');
 insert into t_dept(DEPTNO, DNAME) values (30, '기술연구소');
 insert into t_dept(DEPTNO, DNAME) values (40, '개발');
 insert into t_dept(DEPTNO, DNAME) values (50, '고객지원');
+
+CREATE TABLE `register`.`t_shopping_log` (
+  `idx` INT NOT NULL AUTO_INCREMENT,
+  `log` VARCHAR(100) NOT NULL,
+  `timestamp` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`idx`));

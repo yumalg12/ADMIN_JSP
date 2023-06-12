@@ -89,23 +89,33 @@ request.setCharacterEncoding("UTF-8");
     <input type="text" name="userName" class="form-control" placeholder="username" value="<%=userName%>" maxlength="5">
 </div>
 
+    <div class="item">
+    <label>부서</label>
+    <select class="form-select" name="dept">
+
+<% 		pstmt = null;
+		rs = null;
+
+		sql = "SELECT * FROM `t_dept` ORDER BY DEPTNO ASC;";
+
+		pstmt = conn.prepareStatement(sql);
+
+		rs = pstmt.executeQuery();
+		
+		// 결과를 출력s
+		while (rs.next()) {
+			Integer deptno = rs.getInt("DEPTNO");
+			String dname = rs.getString("DNAME");%>
+		<option value="<%=deptno %>"><%=dname %></option>
+		<%} %>
+	</select>
+    </div>
+
 <script>
 $(document).ready(function(){
 	$("#dept option[value='<%=dept%>']").prop("selected", true);
 });
 </script>
-
-<div class="item">
-    <label>부서</label>
-    <select class="form-control" name="dept" id="dept">
-        <option value="10">운영/회계</option>
-        <option value="20">마케팅</option>
-        <option value="30">기술연구소</option>
-        <option value="40">개발</option>
-        <option value="50">고객지원</option>
-    </select>
-</div>
-
 
     <div class="item">
     <label>성별</label>
@@ -155,9 +165,9 @@ $(document).ready(function(){
 </div>
 
 <%} %>
-<input type="submit" value="Save" id="save" name="save">
-<span class="btn" style="padding: 7px 10px; position: relative; top: 0.2px;" onClick="location.href='./user_db.jsp'">Cancel</span>
-<span class="btn" style="padding: 7px 10px; position: relative; top: 0.2px; background: white;" onClick="history.go(0)">Reset</span>
+<input class="btn btn-primary" type="submit" value="Save" id="save" name="save">
+<span class="btn btn-secondary" style="padding: 7px 10px; position: relative; top: 0.2px;" onClick="location.href='./user_db.jsp'">Cancel</span>
+<span class="btn btn-outline-secondary" style="padding: 7px 10px; position: relative; top: 0.2px; background: white;" onClick="history.go(0)">Reset</span>
 </form>
 
 		</div>

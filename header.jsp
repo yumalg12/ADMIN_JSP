@@ -40,7 +40,7 @@
 		<div class="headerItem" id="headerUserInfo" style="
     text-align: right;
     margin-right: 30px;
-    margin-top: -4px;
+    margin-top: 9px;
 ">
 <%
 String member_id = (String) session.getAttribute("member_id");

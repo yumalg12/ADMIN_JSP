@@ -11,7 +11,7 @@ request.setCharacterEncoding("UTF-8");
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Department Modification</title>
+<title>DB Log</title>
 
 <style>
 .smallth{
@@ -34,14 +34,12 @@ text-align:center;}
 			</div>
 			<div class="container">
 
-				<h1>부서 관리</h1>
-<h2>부서 목록</h2>
-				<table
-					style="width: 50%; margin-left: auto; margin-right: auto; min-width: 320px; max-width: 800px;">
-					<tr>
-						<th class="smallth">부서번호</th>
-						<th>부서명</th>
-						<th class="smallth">인원</th>
+				<h1>변경 내역</h1>
+				<table>
+<tr>
+						<th class="smallth">Idx</th>
+						<th>로그 내역</th>
+						<th>발생 시각</th>
 					</tr>
 
 					<%@ include file="./admin/conn.jsp"%>
@@ -51,11 +49,7 @@ text-align:center;}
 					PreparedStatement pstmt = null;
 					ResultSet rs = null;
 
-					String sql = "SELECT t_dept.DEPTNO, t_dept.DNAME, IFNULL(COUNT(t_shopping_member.deptno), 0) AS 'COUNT' "
-							+"FROM t_dept "
-							+"LEFT JOIN t_shopping_member ON t_dept.DEPTNO = t_shopping_member.DEPTNO "
-							+"GROUP BY t_dept.DEPTNO, DNAME "
-							+"ORDER BY t_dept.DEPTNO ASC;";
+					String sql = "SELECT * FROM t_shopping_log ORDER BY idx desc;";
 
 					pstmt = conn.prepareStatement(sql);
 
@@ -63,39 +57,21 @@ text-align:center;}
 
 					// 결과를 출력
 					while (rs.next()) {
-						Integer deptno = rs.getInt("DEPTNO");
-						String dname = rs.getString("DNAME");
-						Integer count = rs.getInt("COUNT");
+						Integer idx = rs.getInt("idx");
+						String log = rs.getString("log");
+						String timestamp = rs.getString("timestamp").substring(0,19);
 					%>
 
 					<tr>
-						<td class="smalltd"><%=deptno%></td>
-						<td><%=dname%></td>
-						<td class="smalltd"><%=count%></td>
+						<td class="smalltd"><%=idx%></td>
+						<td><%=log%></td>
+						<td><%=timestamp%></td>
 					</tr>
 					<%
 					}
 					%>
 				</table>
 				<br>
-				<h2>부서 추가</h2>
-				
-				<form name="Registerform" action="./admin/dept_add.jsp"
-					method="post" onSubmit="return checkDept();">
-
-					<div class="item">
-						<label>부서 번호</label> <input type="text" name="deptno"
-							class="form-control" placeholder="deptno" value="" maxlength="5">
-					</div>
-
-					<div class="item">
-						<label>부서명</label> <input type="text" name="dname" class="form-control"
-							placeholder="dname" value="">
-					</div>
-				<div id="infobtns">
-					<input class="btn btn-primary" type="submit" value="Add" id="add" name="add">
-				</div>
-				</form>
 
 			</div>
 		</div>

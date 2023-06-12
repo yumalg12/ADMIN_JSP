@@ -48,7 +48,7 @@ function createDIV(){
 	newDiv = document.createElement("div");
 	let i = 0;
 
-	newDiv.innerHTML = "<br><select class=\"form-control\" style=\"margin-left: 55px; width: 70px; margin-right: 6px;\"><option value=\"OR\">OR</option><option value=\"AND\">AND</option></select><select class=\"form-control\" id=\"sqlSelect\" name=\"sqlSelect\" onChange=queryValInput()><option value=\"MEMBER_ID\">ID</option><option value=\"MEMBER_GENDER\">성별</option><option value=\"SMSSTS_YN\">SMS 수신여부</option><option value=\"EMAILSTS_YN\">이메일 수신여부</option><option value=\"DEL_YN\">탈퇴 여부</option></select> <input type=\"text\" class=\"form-control\" id=\"sqlInput\" name=\"queryVal\" placeholder=\"value\" style=\"width: 200px;\"> <select class=\"form-control\" id=\"sqlGender\" name=\"queryVal\" style=\"display: none; width: 200px;\" disabled><option value=\"female\">여자</option><option value=\"male\">남자</option></select> <select class=\"form-control\" id=\"sqlYN\" name=\"queryVal\" style=\"display: none; width: 200px;\" disabled><option value=\"Y\">Y</option><option value=\"N\">N</option></select><img class=\"imgbtn\" src=\"./repo/mathematics-sign-minus-round-icon.svg\" style=\"width: 16px; position: relative; top: 3px;\" onclick=\"javascript:deleteDIV(this)\">";
+	newDiv.innerHTML = "<br><select class=\"form-select\" style=\"margin-left: 37px; width: 88px; margin-right: 6px;\"><option name="or" value=\"OR\">OR</option><option value=\"AND\">AND</option></select><select class=\"form-select\" id=\"sqlSelect\" name=\"sqlSelect\" onChange=queryValInput()><option value=\"MEMBER_ID\">ID</option><option value=\"MEMBER_GENDER\">성별</option><option value=\"SMSSTS_YN\">SMS 수신여부</option><option value=\"EMAILSTS_YN\">이메일 수신여부</option><option value=\"DEL_YN\">탈퇴 여부</option></select> <input type=\"text\" class=\"form-control\" id=\"sqlInput\" name=\"queryVal\" placeholder=\"value\" style=\"width: 200px;\"> <select class=\"form-select\" id=\"sqlGender\" name=\"queryVal\" style=\"display: none; width: 200px;\" disabled><option value=\"female\">여자</option><option value=\"male\">남자</option></select> <select class=\"form-control\" id=\"sqlYN\" name=\"queryVal\" style=\"display: none; width: 200px;\" disabled><option value=\"Y\">Y</option><option value=\"N\">N</option></select><img class=\"imgbtn\" src=\"./repo/mathematics-sign-minus-round-icon.svg\" style=\"width: 16px; position: relative; top: -1px;\" onclick=\"javascript:deleteDIV(this)\">";
 	newDiv.setAttribute("class", ("detailSearchCount")); // 새롭게 만들어지는 div 태그에 id 값 저장
 	newDiv.setAttribute("id", ("detailSearchObj" + i)); // 새롭게 만들어지는 div 태그에 id 값 저장
 
@@ -99,7 +99,7 @@ function deleteDIV(obj){
 	<form name="DetailSearchQueryForm" id="DetailSearchQueryForm" method="post" accept-charset="UTF-8" action="./user_db.jsp">
 	<div id="detailSearch" style="display: inline;">
 			<label style="width: 80px;">검색 조건</label>
-			<img class="imgbtn" src="./repo/addition-color-icon.svg" style="width: 20px; position: relative; top: 4px;" onclick="javascript:createDIV()">
+			<img class="imgbtn" src="./repo/addition-color-icon.svg" style="width: 20px; position: relative; top: -2px;" onclick="javascript:createDIV()">
 		<div class="detailSearchCount" id="detailSearchObj0" style="margin-left: 20px;">
 			<select class="form-select" id="sqlSelect" name="sqlSelect" onChange=queryValInput()>
 			<option value="MEMBER_ID">ID</option>
@@ -170,10 +170,8 @@ function deleteDIV(obj){
 				+ "from `t_shopping_member` join `t_dept` on `t_shopping_member`.DEPTNO = `t_dept`.DEPTNO "
 				+ sqlSearch
 				+"order by JOINDATE DESC;";
-				
 
-				
-		out.print(sql);
+		//out.print(sql);
 
 		pstmt = conn.prepareStatement(sql);
 
@@ -215,7 +213,7 @@ function deleteDIV(obj){
 			<td><%=SMSYN%></td>
 			<td><%=email1+"@"+email2%></td>
 			<td><%=emailYN%></td>
-			<td class="text-truncate"><%="(우)"+zipcode+" "+roadaddress+" "+namujiaddress%></td>
+			<td><%="(우)"+zipcode+" "+roadaddress+" "+namujiaddress%></td>
 			<td><%=bYear+"년 "+bMon+"월 "+bDay+"일"%></td>
 			<td><%=joinDate%></td>
 			<td><%=delYN%></td>			

@@ -7,6 +7,9 @@
 // 인코딩
 request.setCharacterEncoding("UTF-8");
 %>
+<%@page import="java.sql.PreparedStatement"%>
+<%@page import="java.sql.ResultSet"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -47,11 +50,22 @@ request.setCharacterEncoding("UTF-8");
     <div class="item">
     <label>부서</label>
     <select class="form-select" name="dept">
-		<option value="10">운영/회계</option>
-		<option value="20">마케팅</option>
-		<option value="30">기술연구소</option>
-		<option value="40">개발</option>
-		<option value="50">고객지원</option>
+<%@include file="./admin/conn.jsp" %>
+<% 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		String sql = "SELECT * FROM `t_dept` ORDER BY DEPTNO ASC;";
+
+		pstmt = conn.prepareStatement(sql);
+
+		rs = pstmt.executeQuery();
+		
+		// 결과를 출력
+		while (rs.next()) {
+			Integer deptno = rs.getInt("DEPTNO");
+			String dname = rs.getString("DNAME");%>
+		<option value="<%=deptno %>"><%=dname %></option>
+		<%} %>
 	</select>
     </div>
     
@@ -113,7 +127,7 @@ request.setCharacterEncoding("UTF-8");
 </div>    
 
 <div class="item">
-    <input type="submit" value="Register">
+    <input class="btn btn-primary" type="submit" value="Register">
 </div>
 </form>
 

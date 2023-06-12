@@ -7,16 +7,13 @@
 		<a href="./mypw.jsp">비밀번호 변경</a>
 	</div>
 	<br>
-	<label>회원관리</label>
+	<label>DB</label>
 	<div class="item">
 		<a href="./user_db.jsp">전체회원조회</a><br>
-		<a href="./dept.jsp">부서 관리</a>
+		<a href="./dept.jsp">부서 관리</a><br>
+		<a href="./log.jsp">변경 내역</a>
 	</div>
-	<br>
-	<label>게시글 관리</label>
-	<div class="item">
-		<a href="javascript:alert('개발 예정입니다.');">게시판</a>
-	</div>
+
 	
 	<script>
 if ("<%=member_id %>" == "null") {
