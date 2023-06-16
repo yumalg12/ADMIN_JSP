@@ -23,12 +23,11 @@ request.setCharacterEncoding("UTF-8");
 <form name="Loginform" action="./admin/login_ok.jsp" method="post" style="display: inline;" onSubmit="return isEmpty();">
     <label>아이디</label>
     <input type="text" class="form-control" id="userID" name="userID" placeholder="user ID" maxlength="12"> 
-    
-    <br>
+    <p> </p>
     <label>비밀번호</label>
     <input type="password" class="form-control" name="PW" placeholder="password" maxlength="20">
  
-    <br>    
+    <br><br>
     <input type="submit" value="Login" class="btn btn-outline-primary">
 </form>
     <input type="submit" value="Register" class="btn btn-primary" onClick=(location.href='./register.jsp')>

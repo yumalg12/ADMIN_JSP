@@ -5,9 +5,10 @@
 	<%
 	Connection conn = null;
 
-	String url = "jdbc:mysql://localhost:3306/register";
+	String url = "jdbc:mysql://localhost:3306/register?characterEncoding=UTF-8&serverTimezone=UTC&useSSL=false";
 	String id = "root"; //MySQL에 접속을 위한 계정의 ID
 	String pwd = "mysql"; //MySQL에 접속을 위한 계정의 암호
 	Class.forName("com.mysql.jdbc.Driver");
 	conn = DriverManager.getConnection(url, id, pwd);
+	
 	%>

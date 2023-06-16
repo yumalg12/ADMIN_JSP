@@ -21,7 +21,7 @@ String inputID = request.getParameter("userID");
 String inputPW = request.getParameter("PW");
 %>
 
-<%@ include file = "./conn.jsp"%>
+<%@ include file = "conn.jsp"%>
 <%
 PreparedStatement pstmt = null;
 ResultSet rs = null;

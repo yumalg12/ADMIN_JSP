@@ -78,13 +78,15 @@ function deleteDIV(obj){
 		<label style="width: 80px;">검색 조건: </label>
 		<select class="form-select" id="sqlSelect" name="sqlSelect" onChange=queryValInput()>
 			<option value="MEMBER_ID">ID</option>
+			<option value="MEMBER_NAME">이름</option>
+			<option value="DEPTNO">부서</option>
 			<option value="MEMBER_GENDER">성별</option>
 			<option value="SMSSTS_YN">SMS 수신여부</option>
 			<option value="EMAILSTS_YN">이메일 수신여부</option>
 			<option value="DEL_YN">탈퇴 여부</option>
 		</select> 
 		<input type="text" class="form-control" id="sqlInput" name="queryVal" placeholder="value" style="width: 200px;"> 
-		<select class="form-control" id="sqlGender" name="queryVal" style="display: none; width: 200px;" disabled>
+		<select class="form-select" id="sqlGender" name="queryVal" style="display: none; width: 200px;" disabled>
 			<option value="female">여자</option>
 			<option value="male">남자</option>
 		</select> 
@@ -159,9 +161,12 @@ function deleteDIV(obj){
 		
 		sqlSelect = request.getParameter("sqlSelect");
 		queryVal = request.getParameter("queryVal");
-		
+		out.print("SQLSELECT: "+sqlSelect+"\r\n");
 		if (sqlSelect != null && queryVal != null && queryVal != ""){
 			sqlSearch = "where t_shopping_member." + sqlSelect + " LIKE '%" + queryVal + "%' ";
+		} else if (sqlSelect != null && sqlSelect.equals("MEMBER_GENDER")) {
+			sqlSearch = "where t_shopping_member." + sqlSelect + " = '" + queryVal + "' ";
+			out.print(sqlSelect);
 		} else {
 			sqlSearch = "";
 		}
@@ -171,7 +176,7 @@ function deleteDIV(obj){
 				+ sqlSearch
 				+"order by JOINDATE DESC;";
 
-		//out.print(sql);
+		out.print(sql);
 
 		pstmt = conn.prepareStatement(sql);
 
