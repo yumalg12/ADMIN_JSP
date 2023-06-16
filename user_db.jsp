@@ -32,6 +32,7 @@ $(document).ready(function() {
         document.getElementById("sqlInput").value = queryVal;
         document.getElementById("sqlGender").value = queryVal;
         document.getElementById("sqlYN").value = queryVal;
+        document.getElementById("sqlDept").value = queryVal;
     } else {
         document.SearchQueryForm.sqlSelect.value = "MEMBER_ID";
         document.getElementById("sqlInput").value = "";
@@ -94,6 +95,24 @@ function deleteDIV(obj){
 			<option value="Y">Y</option>
 			<option value="N">N</option>
 		</select> 
+		<select class="form-select" id="sqlDept" name="queryVal" style="display: none; width: 200px;" disabled>
+		<%@include file="./admin/conn.jsp" %>
+<% 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		String sql = "SELECT * FROM `t_dept` ORDER BY DEPTNO ASC;";
+
+		pstmt = conn.prepareStatement(sql);
+
+		rs = pstmt.executeQuery();
+		
+		// 결과를 출력
+		while (rs.next()) {
+			Integer deptno = rs.getInt("DEPTNO");
+			String dname = rs.getString("DNAME");%>
+		<option value="<%=deptno %>"><%=dname %></option>
+		<%} %>
+	</select>
 	</div>
 			<input class="btn btn-primary" type="submit" value="Submit">
 	</form>
@@ -119,6 +138,23 @@ function deleteDIV(obj){
 			<option value="Y">Y</option>
 			<option value="N">N</option>
 		</select> 
+				<select class="form-select" id="sqldept" name="dept" style="display: none; width: 200px;" disabled>
+<% 		pstmt = null;
+		rs = null;
+
+		sql = "SELECT * FROM `t_dept` ORDER BY DEPTNO ASC;";
+
+		pstmt = conn.prepareStatement(sql);
+
+		rs = pstmt.executeQuery();
+		
+		// 결과를 출력
+		while (rs.next()) {
+			Integer deptno = rs.getInt("DEPTNO");
+			String dname = rs.getString("DNAME");%>
+		<option value="<%=deptno %>"><%=dname %></option>
+		<%} %>
+	</select>
 		</div>
 	</div>
 
@@ -151,32 +187,30 @@ function deleteDIV(obj){
 		<th>수정/제거</th>
 	</tr>	
 	
-<%@ include file = "./admin/conn.jsp"%>
-
 		<%
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
+		pstmt = null;
+		rs = null;
 
 		String sqlSearch = "";
 		
 		sqlSelect = request.getParameter("sqlSelect");
 		queryVal = request.getParameter("queryVal");
-		out.print("SQLSELECT: "+sqlSelect+"\r\n");
 		if (sqlSelect != null && queryVal != null && queryVal != ""){
-			sqlSearch = "where t_shopping_member." + sqlSelect + " LIKE '%" + queryVal + "%' ";
-		} else if (sqlSelect != null && sqlSelect.equals("MEMBER_GENDER")) {
-			sqlSearch = "where t_shopping_member." + sqlSelect + " = '" + queryVal + "' ";
-			out.print(sqlSelect);
+			if (sqlSelect.equals("MEMBER_ID") || sqlSelect.equals("MEMBER_NAME")) {
+				sqlSearch = "where t_shopping_member." + sqlSelect + " LIKE '%" + queryVal + "%' ";
+			} else {
+				sqlSearch = "where t_shopping_member." + sqlSelect + " = '" + queryVal + "' ";
+				}
 		} else {
 			sqlSearch = "";
 		}
 
-		String sql = "SELECT MEMBER_ID, MEMBER_NAME, t_dept.dname, MEMBER_GENDER, TEL1, TEL2, TEL3, SMSSTS_YN, EMAIL1, EMAIL2, EMAILSTS_YN, ZIPCODE, ROADADDRESS, NAMUJIADDRESS, MEMBER_BIRTH_Y, MEMBER_BIRTH_M, MEMBER_BIRTH_D, JOINDATE, DEL_YN "
+		sql = "SELECT MEMBER_ID, MEMBER_NAME, t_dept.dname, MEMBER_GENDER, TEL1, TEL2, TEL3, SMSSTS_YN, EMAIL1, EMAIL2, EMAILSTS_YN, ZIPCODE, ROADADDRESS, NAMUJIADDRESS, MEMBER_BIRTH_Y, MEMBER_BIRTH_M, MEMBER_BIRTH_D, JOINDATE, DEL_YN "
 				+ "from `t_shopping_member` join `t_dept` on `t_shopping_member`.DEPTNO = `t_dept`.DEPTNO "
 				+ sqlSearch
 				+"order by JOINDATE DESC;";
 
-		out.print(sql);
+		System.out.println(sql);
 
 		pstmt = conn.prepareStatement(sql);
 
@@ -261,22 +295,32 @@ function queryValInput() {
 		objhide("sqlInput");
 		objshow("sqlGender");
 		objhide("sqlYN");
+		objhide("sqlDept");
 	} else if (selectVal === "SMSSTS_YN"){
 		objhide("sqlInput");
 		objhide("sqlGender");
 		objshow("sqlYN");
+		objhide("sqlDept");
 	} else if (selectVal === "EMAILSTS_YN"){
 		objhide("sqlInput");
 		objhide("sqlGender");
 		objshow("sqlYN");
+		objhide("sqlDept");
 	} else if (selectVal === "DEL_YN"){
 		objhide("sqlInput");
 		objhide("sqlGender");
 		objshow("sqlYN");
+		objhide("sqlDept");
+	} else if (selectVal === "DEPTNO"){
+		objhide("sqlInput");
+		objhide("sqlGender");
+		objhide("sqlYN");
+		objshow("sqlDept");
 	} else {
 		objshow("sqlInput");
 		objhide("sqlGender");
 		objhide("sqlYN");
+		objhide("sqlDept");
 	}
 }
 
